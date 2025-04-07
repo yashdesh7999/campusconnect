@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for tab navigation */
+        .tab-link {
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid transparent;
+            margin-right: 1rem;
+            color: #4b5563;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+        }
+        .tab-link:hover, .tab-link.active {
+            border-bottom-color: #3b82f6;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Sub-tab styles (Events tab) */
+        .sub-tab-link {
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid transparent;
+            margin-right: 1rem;
+            color: #4b5563;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sub-tab-link:hover, .sub-tab-link.active {
+            border-bottom-color: #3b82f6;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 relative">
+                <img src="https://placehold.co/1200x300/ffffff/000000?text=Club+Banner&font=Montserrat" alt="Club Banner" class="w-full h-48 object-cover absolute inset-0 opacity-30">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-4">
+                        <img src="https://placehold.co/100x100/fecaca/1f2937?text=AI&font=Montserrat" alt="Club Logo" class="w-20 h-20 rounded-full border-4 border-white shadow-md">
+                        <div>
+                            <h1 class="text-2xl font-bold">AI Club</h1>
+                            <p class="text-sm">Request Sent</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-200">Exploring the world of Artificial Intelligence.</p>
+                </div>
+            </div>
+
+            <nav class="bg-gray-100 p-4 border-b border-gray-200">
+                <div class="flex overflow-x-auto">
+                    <a href="#about" class="tab-link active">About</a>
+                    <a href="#events" class="tab-link">Events</a>
+                    <a href="#members" class="tab-link">Members</a>
+                    <a href="#resources" class="tab-link">Resources</a>
+                    <a href="#discussions" class="tab-link">Discussions</a>
+                    <a href="#announcements" class="tab-link">Announcements</a>
+                    <a href="#gallery" class="tab-link">Media Gallery</a>
+                    <a href="#admins" class="tab-link">Admins</a>
+                </div>
+            </nav>
+
+            <section id="about" class="tab-content active p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800">About the AI Club</h2>
+                <p class="text-gray-700">
+                    The AI Club is dedicated to fostering knowledge and innovation in the field of Artificial Intelligence. We aim to provide a platform for students to learn, collaborate, and build exciting AI projects.
+                </p>
+                <h3 class="font-semibold text-gray-800">Key Focus Areas:</h3>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Machine Learning</li>
+                    <li>Deep Learning</li>
+                    <li>Natural Language Processing</li>
+                    <li>Computer Vision</li>
+                </ul>
+                <h3 class="font-semibold text-gray-800">Faculty Coordinator(s):</h3>
+                <p class="text-gray-700">Dr. Jane Smith, Professor, Computer Science</p>
+                <h3 class="font-semibold text-gray-800">Student Admin(s):</h3>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>John Doe (President)</li>
+                    <li>Alice Johnson (Vice President)</li>
+                </ul>
+                <h3 class="font-semibold text-gray-800">How to Join:</h3>
+                <p class="text-gray-700">
+                    To join the AI Club, please submit a request through the portal.  Your request will be reviewed by the club admins.
+                </p>
+            </section>
+
+            <section id="events" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Upcoming Events</h2>
+                 <nav class="mb-4">
+                    <div class="flex overflow-x-auto">
+                        <a href="#upcoming-events" class="sub-tab-link active">Upcoming Events</a>
+                        <a href="#past-events" class="sub-tab-link">Past Events</a>
+                    </div>
+                </nav>
+                <div id="upcoming-events" class = "sub-tab-content active">
+                    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">AI Workshop</h3>
+                        <p class="text-sm text-gray-500">Date: 2025-02-15 | Time: 10:00 AM</p>
+                        <p class="text-gray-700">Learn the basics of AI and build your first model.</p>
+                        <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</button>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">AI Hackathon</h3>
+                        <p class="text-sm text-gray-500">Date: 2025-03-01 | Time: 9:00 AM</p>
+                        <p class="text-gray-700">Compete with other students to solve real-world problems using AI.</p>
+                        <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</button>
+                    </div>
+                </div>
+                <div id="past-events" class = "sub-tab-content">
+                    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">AI Seminar 2024</h3>
+                        <p class="text-sm text-gray-500">Date: 2024-02-15 | Time: 10:00 AM</p>
+                        <p class="text-gray-700">A seminar on the ethics of AI.</p>
+                         <a href="#" class="mt-2 text-blue-600 hover:underline">Event Feedback</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="members" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Club Members</h2>
+                 <input
+                    type="text"
+                    id="memberSearch"
+                    placeholder="Search members..."
+                    class="mb-4"
+                />
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="flex items-center gap-4 bg-white rounded-lg p-4 shadow-md">
+                        <img src="https://placehold.co/40x40/86efac/000000?text=JD&font=Montserrat" alt="John Doe" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-semibold text-gray-800">John Doe</p>
+                            <p class="text-sm text-gray-500">President</p>
+                        </div>
+                         <button class="ml-auto text-blue-500 hover:underline text-sm">Request Chat</button>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white rounded-lg p-4 shadow-md">
+                        <img src="https://placehold.co/40x40/fca5a5/000000?text=AJ&font=Montserrat" alt="Alice Johnson" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-semibold text-gray-800">Alice Johnson</p>
+                            <p class="text-sm text-gray-500">Vice President</p>
+                         </div>
+                         <button class="ml-auto text-blue-500 hover:underline text-sm">Request Chat</button>
+                    </div>
+                     <div class="flex items-center gap-4 bg-white rounded-lg p-4 shadow-md">
+                        <img src="https://placehold.co/40x40/60a5fa/000000?text=RB&font=Montserrat" alt="Robert Brown" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-semibold text-gray-800">Robert Brown</p>
+                            <p class="text-sm text-gray-500">Member</p>
+                         </div>
+                         <button class="ml-auto text-blue-500 hover:underline text-sm">Request Chat</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="resources" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Resources</h2>
+                 <div class="flex flex-wrap gap-2 mb-4 text-sm">
+                    <select id="resourceTypeFilter" class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Types</option>
+                        <option value="Presentation">Presentation</option>
+                        <option value="Document">Document</option>
+                        <option value="Link">Link</option>
+                    </select>
+                    <select id="resourceDateFilter" class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Upload Date</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                    <select id="resourceTopicFilter" class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Topic</option>
+                        <option value="AI">AI</option>
+                        <option value="Robotics">Robotics</option>
+                        <option value="Photography">Photography</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-gray-800 mb-1">Linked List Implementation</h4>
+                        <p class="text-sm text-gray-500 mb-2">Uploaded: 2025-02-10 | Type: Presentation</p>
+                        <p class="text-sm text-gray-700 mb-2">A presentation on linked list data structure.</p>
+                        <a href="#" class="text-blue-600 hover:underline">Download</a>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-gray-800 mb-1">Python Basics</h4>
+                        <p class="text-sm text-gray-500 mb-2">Uploaded: 2025-02-05 | Type: Document</p>
+                        <p class="text-sm text-gray-700 mb-3">A beginner-friendly guide to Python programming.</p>
+                        <a href="#" class="text-blue-600 hover:underline">View</a>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-gray-800 mb-1">Robotics Arm Control</h4>
+                         <p class="text-sm text-gray-500 mb-2">Uploaded: 2025-01-20 | Type: Link</p>
+                        <p class="text-sm text-gray-700 mb-3">Link to a research paper on robotic arm control.</p>
+                        <a href="#" class="text-blue-600 hover:underline">Go to Link</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="discussions" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Discussions</h2>
+                <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Thread 1: AI Ethics</h3>
+                    <p class="text-sm text-gray-500 mb-2">Posted by: John Doe | 2025-02-10</p>
+                    <p class="text-gray-700 mb-2">What are the ethical implications of AI development?</p>
+                     <div class="flex gap-4 items-center">
+                        <button class="text-gray-500 hover:text-red-500 transition-colors"><span class="lucide text-xl">heart</span> Like (5)</button>
+                        <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span> Reply (2)</button>
+                        <button class="text-gray-500 hover:text-yellow-500 transition-colors"><span class="lucide text-xl">flag</span> Report</button>
+                     </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Thread 2: Best Python Resources</h3>
+                    <p class="text-sm text-gray-500 mb-2">Posted by: Alice Johnson | 2025-02-08</p>
+                    <p class="text-gray-700 mb-2">Share your favorite resources for learning Python.</p>
+                    <div class="flex gap-4 items-center">
+                        <button class="text-gray-500 hover:text-red-500 transition-colors"><span class="lucide text-xl">heart</span> Like (10)</button>
+                        <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span> Reply (8)</button>
+                        <button class="text-gray-500 hover:text-yellow-500 transition-colors"><span class="lucide text-xl">flag</span> Report</button>
+                     </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Thread 3: Upcoming Robotics Competitions</h3>
+                    <p class="text-sm text-gray-500 mb-2">Posted by: Robert Brown | 2025-02-01</p>
+                    <p class="text-gray-700 mb-2">Details about upcoming robotics competitions.</p>
+                    <div class="flex gap-4 items-center">
+                        <button class="text-gray-500 hover:text-red-500 transition-colors"><span class="lucide text-xl">heart</span> Like (2)</button>
+                        <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span> Reply (1)</button>
+                        <button class="text-gray-500 hover:text-yellow-500 transition-colors"><span class="lucide text-xl">flag</span> Report</button>
+                     </div>
+                </div>
+            </section>
+
+            <section id="announcements" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Announcements</h2>
+                 <div class="flex flex-wrap gap-2 mb-4 text-sm">
+                    <select id="announcementDateFilter" class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Filter by Month</option>
+                        <option value="2025-01">January 2025</option>
+                        <option value="2025-02">February 2025</option>
+                        <option value="2025-03">March 2025</option>
+                    </select>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Welcome to the AI Club!</h3>
+                    <p class="text-sm text-gray-500 mb-2">Posted: 2025-02-01</p>
+                    <p class="text-gray-700">
+                        Welcome to the official AI Club page!  We're excited to have you join our community.  Stay tuned for upcoming events and workshops.
+                    </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Next Meeting</h3>
+                    <p class="text-sm text-gray-500 mb-2">Posted: 2025-01-25</p>
+                    <p class="text-gray-700">
+                        Our first meeting will be held on February 8th at 3 PM in Room 202.  We will be discussing project ideas for the semester.
+                    </p>
+                </div>
+            </section>
+
+            <section id="gallery" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Media Gallery</h2>
+                 <div class="flex flex-wrap gap-4">
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                        <img src="https://placehold.co/400x300/87CEEB/FFFFFF?text=Workshop+1&font=Montserrat" alt="Workshop 1" class="rounded-md w-full h-auto">
+                        <p class="text-sm text-gray-500 mt-2">Workshop on Deep Learning</p>
+                    </div>
+                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                        <img src="https://placehold.co/400x300/4682B4/FFFFFF?text=Hackathon+2024&font=Montserrat" alt="Hackathon 2024" class="rounded-md w-full h-auto">
+                         <p class="text-sm text-gray-500 mt-2">Hackathon 2024</p>
+                    </div>
+                     <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+                        <img src="https://placehold.co/400x300/6495ED/FFFFFF?text=Outreach+Event&font=Montserrat" alt="Outreach Event" class="rounded-md w-full h-auto">
+                         <p class="text-sm text-gray-500 mt-2">Community Outreach</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="admins" class="tab-content p-6 space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Club Admins & Coordinators</h2>
+                <div class="bg-white rounded-lg shadow-md p-4 mb-2 flex items-center gap-4">
+                    <img src="https://placehold.co/50x50/fecaca/1f2937?text=JS&font=Montserrat" alt="John Smith" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="font-semibold text-gray-800">Dr. John Smith</p>
+                        <p class="text-sm text-gray-500">Faculty Coordinator</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 flex items-center gap-4">
+                    <img src="https://placehold.co/50x50/86efac/000000?text=JD&font=Montserrat" alt="Jane Doe" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="font-semibold text-gray-800">Jane Doe</p>
+                        <p class="text-sm text-gray-500">Student President</p>
+                    </div>
+                </div>
+            </section>
+
+             <footer class="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex space-x-4">
+                    <a href="#" aria-label="Facebook" class="text-gray-500 hover:text-blue-600 transition-colors"><span class="lucide text-xl">facebook</span></a>
+                    <a href="#" aria-label="Instagram" class="text-gray-500 hover:text-pink-500 transition-colors"><span class="lucide text-xl">instagram</span></a>
+                    <a href="#" aria-label="Twitter" class="text-gray-500 hover:text-blue-400 transition-colors"><span class="lucide text-xl">twitter</span></a>
+                </div>
+                <button class="bg-white text-blue-600 px-6 py-2 rounded-lg shadow hover:shadow-md transition-shadow text-sm font-medium border border-blue-200 hover:bg-blue-50">
+                    👋 Join Other Clubs
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const subTabs = document.querySelectorAll('.sub-tab-link');
+        const subTabContents = document.querySelectorAll('.sub-tab-content');
+        const filterDropdown = document.getElementById('filterDropdown');
+        const filterMenu = document.getElementById('filterMenu');
+        const filterMenuItems = document.querySelectorAll('.filter-menu-item');
+        const memberSearch = document.getElementById('memberSearch');
+
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                const targetId = tab.getAttribute('href').substring(1);
+                document.getElementById(targetId).classList.add('active');
+                tab.classList.add('active');
+            });
+        });
+
+        // Event delegation for sub-tabs within the Events tab
+        if (document.getElementById('events')) {  // Make sure the Events tab exists
+            document.getElementById('events').addEventListener('click', (event) => {
+                if (event.target.classList.contains('sub-tab-link')) {
+                    subTabs.forEach(tab => tab.classList.remove('active'));
+                    subTabContents.forEach(content => content.classList.remove('active'));
+
+                    const targetId = event.target.getAttribute('href').substring(1);
+                    document.getElementById(targetId).classList.add('active');
+                    event.target.classList.add('active');
+                }
+            });
+        }
+
+
+        filterDropdown.addEventListener('click', () => {
+            filterMenu.classList.toggle('show');
+        });
+
+        filterMenuItems.forEach(item => {
+            item.addEventListener('click', (event) => {
+                const filterType = event.target.dataset.type;
+                // Handle filter logic here (e.g., update member list)
+                console.log(`Filter selected: ${filterType}`);
+                filterMenu.classList.remove('show');
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.filter-dropdown') && !event.target.closest('.filter-menu')) {
+                filterMenu.classList.remove('show');
+            }
+        });
+
+        if (memberSearch) {
+            memberSearch.addEventListener('input', () => {
+                const searchTerm = memberSearch.value.toLowerCase();
+                // Handle member search logic here
+                console.log(`Searching members for: ${searchTerm}`);
+            });
+        }
+
+
+    </script>
+</body>
+</html>

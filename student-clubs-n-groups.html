@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs & Groups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .club-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .club-card:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .club-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem auto;
+            border: 2px solid #e0e0e0;
+        }
+        .club-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .club-description {
+            font-size: 0.875rem;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .club-members {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .club-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .club-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            background-color: #e5e7eb;
+            color: #374151;
+            font-size: 0.75rem;
+        }
+        .club-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+        .club-actions button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        .join-button {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .join-button:hover {
+            background-color: #2563eb;
+        }
+        .view-button {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+        .view-button:hover {
+            background-color: #d0d0d0;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: 1px solid #e0e0e0;
+        }
+        .filter-chip:hover {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .filter-chip.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        #searchClubs {
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            box-shadow: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        #searchClubs:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+
+        @media (max-width: 768px) {
+            .club-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .club-actions {
+                flex-direction: column;
+            }
+             .filter-container{
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #searchClubs{
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-semibold text-blue-700 text-center mb-8">Clubs & Groups</h1>
+
+        <div class="flex flex-col md:flex-row md:items-center mb-6">
+            <input
+                type="text"
+                id="searchClubs"
+                placeholder="Search clubs..."
+                class="mb-4 md:mb-0"
+            />
+            <div class="filter-container" id="clubFilters">
+                    <span class="filter-chip" data-type="All">All</span>
+                    <span class="filter-chip" data-type="Tech">Tech</span>
+                    <span class="filter-chip" data-type="Cultural">Cultural</span>
+                    <span class="filter-chip" data-type="Sports">Sports</span>
+                    <span class="filter-chip" data-type="Creative">Creative</span>
+                    <span class="filter-chip" data-type="Innovation">Innovation</span>
+                    <span class="filter-chip" data-type="Social">Eco/Social</span>
+                </div>
+        </div>
+
+        <div id="clubList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+    </div>
+
+    <script>
+        const clubs = [
+            {
+                name: "Lexicon Club",
+                description: "Literary club for poetry, debates, and writing.",
+                logo: "https://placehold.co/80x80/4CAF50/FFFFFF?text=LX&font=Montserrat",
+                members: 150,
+                tags: ["Cultural", "Creative"],
+                activities: ["Poetry slams", "Debates", "Writing workshops"],
+            },
+            {
+                name: "Cultural Club",
+                description: "Celebrating diversity through dance, music, and drama.",
+                logo: "https://placehold.co/80x80/FFC107/000000?text=CC&font=Montserrat",
+                members: 200,
+                tags: ["Cultural"],
+                activities: ["Dance", "Music", "Drama"],
+            },
+            {
+                name: "Robotics Club",
+                description: "Building and competing with robots.",
+                logo: "https://placehold.co/80x80/3F51B5/FFFFFF?text=RC&font=Montserrat",
+                members: 80,
+                tags: ["Tech", "Innovation"],
+                activities: ["Robot design", "Competitions", "Workshops"],
+            },
+            {
+                name: "Sports Club",
+                description: "Organizing sports events and promoting fitness.",
+                logo: "https://placehold.co/80x80/D50000/FFFFFF?text=SC&font=Montserrat",
+                members: 250,
+                tags: ["Sports"],
+                activities: ["Tournaments", "Fitness training", "Yoga"],
+            },
+            {
+                name: "Photography Club",
+                description: "Capturing moments and learning photography skills.",
+                logo: "https://placehold.co/80x80/9C27B0/FFFFFF?text=PC&font=Montserrat",
+                members: 120,
+                tags: ["Creative", "Cultural"],
+                activities: ["Photo walks", "Exhibitions", "Workshops"],
+            },
+            {
+                name: "Film Making Club",
+                description: "Creating short films, documentaries, and animations.",
+                logo: "https://placehold.co/80x80/00BCD4/000000?text=FC&font=Montserrat",
+                members: 90,
+                tags: ["Creative", "Cultural"],
+                activities: ["Short films", "Documentaries", "Animation"],
+            },
+            {
+                name: "Art Club",
+                description: "Exploring various art forms and techniques.",
+                logo: "https://placehold.co/80x80/8BC34A/FFFFFF?text=AC&font=Montserrat",
+                members: 110,
+                tags: ["Creative", "Cultural"],
+                activities: ["Painting", "Sculpture", "Exhibitions"],
+            },
+            {
+                name: "SAE Club",
+                description: "Society of Automotive Engineers student chapter.",
+                logo: "https://placehold.co/80x80/2196F3/FFFFFF?text=SAE&font=Montserrat",
+                members: 70,
+                tags: ["Tech", "Innovation"],
+                activities: ["Car design", "Racing", "Workshops"],
+            },
+            {
+                name: "Trekker Club",
+                description: "Exploring nature through trekking and hiking.",
+                logo: "https://placehold.co/80x80/795548/FFFFFF?text=TC&font=Montserrat",
+                members: 100,
+                tags: ["Sports", "Social"],
+                activities: ["Trekking", "Hiking", "Camping"],
+            },
+            {
+                name: "Green Wave Club",
+                description: "Promoting environmental awareness and sustainability.",
+                logo: "https://placehold.co/80x80/4CAF50/FFFFFF?text=GWC&font=Montserrat",
+                members: 80,
+                tags: ["Social", "Eco/Social"],
+                activities: ["Cleanliness drives", "Tree plantation", "Workshops"],
+            },
+             {
+                name: "Samagra Club",
+                description: "A club for social causes",
+                logo: "https://placehold.co/80x80/008000/FFFFFF?text=SC&font=Montserrat",
+                members: 75,
+                tags: ["Social", "Eco/Social"],
+                activities: ["Social Work", "Charity Drives", "Awareness Campaigns"]
+            },
+            {
+                name: "Poetry Club",
+                description: "Where words flow and emotions find a voice.",
+                logo: "https://placehold.co/80x80/9932CC/FFFFFF?text=PC&font=Montserrat",
+                members: 60,
+                tags: ["Cultural", "Creative"],
+                activities: ["Poetry Recitals", "Open Mic", "Workshops"]
+            },
+            {
+                name: "Charitable Club",
+                description: "Spreading smiles and making a difference.",
+                logo: "https://placehold.co/80x80/FF4500/FFFFFF?text=CC&font=Montserrat",
+                members: 90,
+                tags: ["Social", "Charitable"],
+                activities: ["Donation Drives", "Fundraising Events", "Volunteering"]
+            },
+            {
+                name: "AI Club",
+                description: "Exploring the world of Artificial Intelligence.",
+                logo: "https://placehold.co/80x80/00FFFF/000000?text=AIC&font=Montserrat",
+                members: 100,
+                tags: ["Tech", "Innovation"],
+                activities: ["AI Workshops", "Research", "Projects"]
+            },
+            {
+                name: "Drone Club",
+                description: "Flying high and capturing the world from above.",
+                logo: "https://placehold.co/80x80/87CEFA/000000?text=DC&font=Montserrat",
+                members: 50,
+                tags: ["Tech", "Aeromodelling"],
+                activities: ["Drone Flying", "Photography", "Videography"]
+            },
+            {
+                name: "Aeromodelling Club",
+                description: "Designing and building flying models.",
+                logo: "https://placehold.co/80x80/B0E0E6/000000?text=AMC&font=Montserrat",
+                members: 65,
+                tags: ["Tech", "Aeromodelling"],
+                activities: ["Model Aircraft Design", "Flying Competitions", "Workshops"]
+            },
+            {
+                name: "IPR Cell",
+                description: "Promoting Intellectual Property Awareness.",
+                logo: "https://placehold.co/80x80/D3D3D3/000000?text=IPR&font=Montserrat",
+                members: 40,
+                tags: ["Innovation", "Legal"],
+                activities: ["Seminars", "Workshops", "Awareness Campaigns"]
+            },
+            {
+                name: "EDC Cell",
+                description: "Fostering Entrepreneurial skills and mindset.",
+                logo: "https://placehold.co/80x80/FFA500/FFFFFF?text=EDC&font=Montserrat",
+                members: 80,
+                tags: ["Innovation", "Business"],
+                activities: ["Start-up Workshops", "Business Plan Competitions", "Networking"]
+            },
+            {
+            name: "Cyber Security Society",
+            description: "Enhancing Cyber Security Knowledge",
+            logo: "https://placehold.co/80x80/000000/FFFFFF?text=CSS&font=Montserrat",
+            members: 120,
+            tags: ["Tech", "Cybersecurity"],
+            activities: ["Ethical Hacking Workshops", "Capture the Flag", "Security Audits"]
+        },
+        {
+            name: "Design & UX Club",
+            description: "Creating user-friendly and visually appealing designs.",
+            logo: "https://placehold.co/80x80/E91E63/FFFFFF?text=DUX&font=Montserrat",
+            members: 90,
+            tags: ["Tech", "Creative", "Design"],
+            activities: ["UI/UX Design Projects", "Design Thinking Workshops", "Portfolio Reviews"]
+        },
+        {
+            name: "Coding Ninjas",
+            description: "Sharpening coding skills and competitive programming.",
+            logo: "https://placehold.co/80x80/4CAF50/FFFFFF?text=CN&font=Montserrat",
+            members: 200,
+            tags: ["Tech", "Coding"],
+            activities: ["Coding Challenges", "Algorithm Workshops", "Hackathons"]
+        }
+        ];
+
+        const clubList = document.getElementById('clubList');
+        const searchClubsInput = document.getElementById('searchClubs');
+        const clubFilters = document.getElementById('clubFilters');
+
+        let activeFilters = new Set(['All']);
+
+        function displayClubs(clubs) {
+            clubList.innerHTML = '';
+            clubs.forEach(club => {
+                 if (activeFilters.has('All') || activeFilters.has(club.tags[0]) || activeFilters.has(club.tags[1])) {
+                    const clubCard = document.createElement('div');
+                    clubCard.className = 'club-card';
+
+                    const tagsHTML = club.tags.map(tag => `<span class="club-tag">${tag}</span>`).join('');
+
+                    clubCard.innerHTML = `
+                        <img src="${club.logo}" alt="${club.name} Logo" class="club-logo">
+                        <h2 class="club-name">${club.name}</h2>
+                        <p class="club-description">${club.description}</p>
+                        <p class="club-members">${club.members} Members</p>
+                        <div class="club-tags">${tagsHTML}</div>
+                        <div class="club-actions">
+                            <button class="join-button" onclick="handleJoinClick('${club.name}')">Request to Join</button>
+                            <button class="view-button" onclick="handleViewActivityClick('${club.name}')">View Activities</button>
+                        </div>
+                    `;
+
+                    clubList.appendChild(clubCard);
+                }
+            });
+        }
+
+        function filterClubs(searchTerm) {
+          const searchTermLower = searchTerm.toLowerCase();
+          return clubs.filter(club =>
+            club.name.toLowerCase().includes(searchTermLower) ||
+            club.description.toLowerCase().includes(searchTermLower)
+          );
+        }
+
+        function handleJoinClick(clubName) {
+            alert(`Request sent to join ${clubName}!`);
+        }
+
+        function handleViewActivityClick(clubName) {
+             const club = clubs.find(c => c.name === clubName);
+            if (club) {
+                alert(`Activities for ${club.name}: ${club.activities.join(', ')}`);
+            } else {
+                alert(`No activities found for ${clubName}.`);
+            }
+        }
+
+
+        searchClubsInput.addEventListener('input', () => {
+            const searchTerm = searchClubsInput.value.trim();
+            const filteredClubs = filterClubs(searchTerm);
+            displayClubs(filteredClubs);
+        });
+
+        clubFilters.addEventListener('click', (event) => {
+            const filterType = event.target.dataset.type;
+            if (!filterType) return;
+
+            if (filterType === 'All') {
+                activeFilters.clear();
+                activeFilters.add('All');
+            } else {
+                activeFilters.delete('All');
+                if (activeFilters.has(filterType)) {
+                    activeFilters.delete(filterType);
+                } else {
+                    activeFilters.add(filterType);
+                }
+                if (activeFilters.size === 0) {
+                    activeFilters.add('All');
+                }
+            }
+
+            // Update UI for active filters
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.toggle('active', activeFilters.has('All') || activeFilters.has(chip.dataset.type));
+            });
+
+            const searchTerm = searchClubsInput.value.trim();
+            const filteredClubs = filterClubs(searchTerm);
+            displayClubs(filteredClubs);
+        });
+
+
+        // Initial display
+        displayClubs(clubs);
+    </script>
+</body>
+</html>

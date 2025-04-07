@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Notes Section</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --light: #f5f6fa;
+            --gray: #95a5a6;
+            --dark: #34495e;
+            --danger: #e74c3c;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #a1a1a1;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR STYLES ===== */
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navbar-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            color: var(--light);
+        }
+
+        /* ===== MAIN CONTENT CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            margin-top: 5rem;
+        }
+
+        /* ===== TABS NAVIGATION STYLES ===== */
+        .tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background-color: white;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .tab-button.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-button:hover:not(.active) {
+            background-color: var(--light);
+        }
+
+        /* ===== CONTENT SECTIONS STYLES ===== */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Filter controls */
+        .filter-controls {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            min-width: 200px;
+            background-color: white;
+        }
+
+        /* ===== NOTES CARD STYLES ===== */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .note-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .note-body {
+            padding: 1rem;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .note-subject {
+            background-color: #f0f7ff;
+            color: var(--primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .note-date {
+            color: var(--gray);
+        }
+
+        .note-description {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .note-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            background-color: var(--light);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .action-button:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* ===== ACCORDION STYLES (FOR SENIORS' NOTES) ===== */
+        .accordion {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1rem;
+            background-color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background-color: #e9f2fa;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        .accordion-content-inner {
+            padding: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== RESPONSIVE STYLES ===== */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .tab-button.active {
+                border-bottom-color: var(--primary);
+                border-right: none;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+  
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-title">
+                <button class="back-button" onclick="goHome()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Notes</h1>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="daily-notes">
+                <i class="fas fa-book"></i> Daily Class Notes
+            </button>
+            <button class="tab-button" data-tab="subject-notes">
+                <i class="fas fa-bookmark"></i> Notes by Subject/Topic
+            </button>
+            <button class="tab-button" data-tab="seniors-notes">
+                <i class="fas fa-users"></i> Seniors' Notes
+            </button>
+        </div>
+
+        <!-- Daily Class Notes Tab Content -->
+        <div class="tab-content active" id="daily-notes">
+            <div class="filter-controls">
+                <div>
+                    <span class="filter-label">Filter by Date:</span>
+                    <select class="filter-select" id="dateFilter">
+                        <option value="all">All Dates</option>
+                        <option value="2025-04-05">Apr 5, 2025</option>
+                        <option value="2025-04-04">Apr 4, 2025</option>
+                        <option value="2025-04-03">Apr 3, 2025</option>
+                        <option value="2025-04-02">Apr 2, 2025</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="notes-grid" id="dailyNotesGrid">
+                <!-- Daily notes will be populated here via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Notes by Subject/Topic Tab Content -->
+        <div class="tab-content" id="subject-notes">
+            <div class="filter-controls">
+                <div>
+                    <span class="filter-label">Select Subject:</span>
+                    <select class="filter-select" id="subjectFilter">
+                        <option value="">Select a subject</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                    </select>
+                </div>
+                <div id="topicFilterContainer" style="display: none;">
+                    <span class="filter-label">Select Topic:</span>
+                    <select class="filter-select" id="topicFilter">
+                        <!-- Topics will be populated based on subject selection -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="notes-grid" id="subjectNotesGrid">
+                <!-- Subject notes will be populated here via JavaScript -->
+                <div class="empty-state">  
+                    <i class="fas fa-book-open"></i>
+                    <h3>Select a subject to view notes</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seniors' Notes Tab Content -->
+        <div class="tab-content" id="seniors-notes">
+            <div id="seniorsNotesAccordion">
+                <!-- Seniors' notes accordions will be populated here via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DUMMY DATA FOR NOTES =====
+        // Daily Class Notes
+        const dailyNotes = [
+            {
+                id: 1,
+                title: "Introduction to Algorithms",
+                subject: "Computer Science",
+                date: "2025-04-05",
+                description: "PPT covering basic algorithm concepts, time complexity, and space complexity.",
+                fileType: "ppt",
+                fileSize: "2.3 MB"
+            },
+            {
+                id: 2,
+                title: "Calculus: Derivatives",
+                subject: "Mathematics",
+                date: "2025-04-05",
+                description: "Class notes on differentiation techniques and applications.",
+                fileType: "pdf",
+                fileSize: "1.8 MB"
+            },
+            {
+                id: 3,
+                title: "Quantum Mechanics Fundamentals",
+                subject: "Physics",
+                date: "2025-04-04",
+                description: "Introduction to wave functions and Schrödinger equation.",
+                fileType: "ppt",
+                fileSize: "4.1 MB"
+            },
+            {
+                id: 4,
+                title: "Data Structures: Binary Trees",
+                subject: "Computer Science",
+                date: "2025-04-04",
+                description: "Implementation and traversal of binary trees.",
+                fileType: "pdf",
+                fileSize: "3.5 MB"
+            },
+            {
+                id: 5,
+                title: "Organic Chemistry: Alcohols",
+                subject: "Chemistry",
+                date: "2025-04-03",
+                description: "Properties and reactions of alcohols and phenols.",
+                fileType: "ppt",
+                fileSize: "2.7 MB"
+            },
+            {
+                id: 6,
+                title: "Linear Algebra: Eigenvalues",
+                subject: "Mathematics",
+                date: "2025-04-02",
+                description: "Finding eigenvalues and eigenvectors of matrices.",
+                fileType: "pdf",
+                fileSize: "1.5 MB"
+            }
+        ];
+
+        // Subject-wise Notes Data
+        const subjectTopics = {
+            "mathematics": [
+                "Calculus",
+                "Linear Algebra",
+                "Statistics",
+                "Discrete Mathematics"
+            ],
+            "computer-science": [
+                "Data Structures",
+                "Algorithms",
+                "Database Systems",
+                "Operating Systems"
+            ],
+            "physics": [
+                "Mechanics",
+                "Electromagnetism",
+                "Quantum Physics",
+                "Thermodynamics"
+            ],
+            "chemistry": [
+                "Organic Chemistry",
+                "Inorganic Chemistry",
+                "Physical Chemistry",
+                "Biochemistry"
+            ]
+        };
+
+        const subjectNotes = {
+            "mathematics-calculus": [
+                {
+                    id: 101,
+                    title: "Limits and Continuity",
+                    description: "Comprehensive notes on limits, continuity, and their applications.",
+                    uploadedBy: "Prof. Johnson",
+                    date: "2025-03-15",
+                    fileType: "pdf",
+                    fileSize: "2.1 MB"
+                },
+                {
+                    id: 102,
+                    title: "Integration Techniques",
+                    description: "Methods of integration including substitution and by parts.",
+                    uploadedBy: "Prof. Johnson",
+                    date: "2025-03-20",
+                    fileType: "pdf",
+                    fileSize: "3.2 MB"
+                }
+            ],
+            "mathematics-linear-algebra": [
+                {
+                    id: 103,
+                    title: "Vector Spaces",
+                    description: "Introduction to vector spaces and subspaces.",
+                    uploadedBy: "Prof. Williams",
+                    date: "2025-03-10",
+                    fileType: "pdf",
+                    fileSize: "1.8 MB"
+                }
+            ],
+            "computer-science-data-structures": [
+                {
+                    id: 201,
+                    title: "Arrays and Linked Lists",
+                    description: "Comparison and implementation of arrays and linked lists.",
+                    uploadedBy: "Prof. Chen",
+                    date: "2025-03-25",
+                    fileType: "pdf",
+                    fileSize: "2.4 MB"
+                },
+                {
+                    id: 202,
+                    title: "Stack and Queue Implementation",
+                    description: "Implementation details and applications of stacks and queues.",
+                    uploadedBy: "Prof. Chen",
+                    date: "2025-03-28",
+                    fileType: "ppt",
+                    fileSize: "1.9 MB"
+                }
+            ],
+            "computer-science-algorithms": [
+                {
+                    id: 203,
+                    title: "Sorting Algorithms",
+                    description: "Analysis and implementation of common sorting algorithms.",
+                    uploadedBy: "Prof. Garcia",
+                    date: "2025-03-22",
+                    fileType: "pdf",
+                    fileSize: "2.7 MB"
+                }
+            ],
+            "physics-mechanics": [
+                {
+                    id: 301,
+                    title: "Newton's Laws of Motion",
+                    description: "Detailed explanation of Newton's three laws with examples.",
+                    uploadedBy: "Prof. Adams",
+                    date: "2025-03-05",
+                    fileType: "pdf",
+                    fileSize: "1.5 MB"
+                }
+            ],
+            "physics-quantum-physics": [
+                {
+                    id: 302,
+                    title: "Quantum States and Operators",
+                    description: "Mathematical formulation of quantum states and operators.",
+                    uploadedBy: "Prof. Lewis",
+                    date: "2025-03-12",
+                    fileType: "ppt",
+                    fileSize: "3.8 MB"
+                }
+            ],
+            "chemistry-organic-chemistry": [
+                {
+                    id: 401,
+                    title: "Alkanes and Cycloalkanes",
+                    description: "Structure, properties, and reactions of alkanes and cycloalkanes.",
+                    uploadedBy: "Prof. Rodriguez",
+                    date: "2025-03-18",
+                    fileType: "pdf",
+                    fileSize: "2.2 MB"
+                }
+            ]
+        };
+
+        // Seniors' Notes Data
+        const seniorsNotes = [
+            {
+                subject: "Mathematics",
+                notes: [
+                    {
+                        id: 501,
+                        title: "Calculus Made Easy",
+                        description: "Simplified approach to calculus with practical examples.",
+                        uploadedBy: "Sarah Johnson (2022 Batch)",
+                        date: "2024-12-10",
+                        fileType: "pdf",
+                        fileSize: "3.5 MB"
+                    },
+                    {
+                        id: 502,
+                        title: "Linear Algebra Cheat Sheet",
+                        description: "Quick reference guide for all linear algebra concepts.",
+                        uploadedBy: "Michael Chen (2022 Batch)",
+                        date: "2024-11-05",
+                        fileType: "pdf",
+                        fileSize: "1.2 MB"
+                    }
+                ]
+            },
+            {
+                subject: "Computer Science",
+                notes: [
+                    {
+                        id: 601,
+                        title: "DSA Interview Preparation",
+                        description: "Collection of important problems and solutions for interviews.",
+                        uploadedBy: "Alex Garcia (2023 Batch)",
+                        date: "2025-01-15",
+                        fileType: "pdf",
+                        fileSize: "4.2 MB"
+                    },
+                    {
+                        id: 602,
+                        title: "Web Development Frameworks",
+                        description: "Comparison of modern web development frameworks with examples.",
+                        uploadedBy: "Emily Wilson (2022 Batch)",
+                        date: "2024-10-20",
+                        fileType: "pdf",
+                        fileSize: "2.8 MB"
+                    }
+                ]
+            },
+            {
+                subject: "Physics",
+                notes: [
+                    {
+                        id: 701,
+                        title: "Physics Problem Solving Techniques",
+                        description: "Strategies for solving complex physics problems efficiently.",
+                        uploadedBy: "David Lee (2023 Batch)",
+                        date: "2025-02-05",
+                        fileType: "pdf",
+                        fileSize: "3.1 MB"
+                    }
+                ]
+            },
+            {
+                subject: "Chemistry",
+                notes: [
+                    {
+                        id: 801,
+                        title: "Organic Chemistry Reaction Mechanisms",
+                        description: "Visual guide to common organic chemistry reactions.",
+                        uploadedBy: "Rachel Martinez (2022 Batch)",
+                        date: "2024-11-30",
+                        fileType: "pdf",
+                        fileSize: "3.7 MB"
+                    }
+                ]
+            }
+        ];
+
+        // ===== EVENT LISTENERS AND FUNCTIONS =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all tabs
+            initTabs();
+            
+            // Load initial data
+            renderDailyNotes(dailyNotes);
+            renderSeniorsNotes(seniorsNotes);
+            
+            // Set up event listeners for filters
+            document.getElementById('dateFilter').addEventListener('change', filterDailyNotes);
+            
+            const subjectFilter = document.getElementById('subjectFilter');
+            subjectFilter.addEventListener('change', function() {
+                const selectedSubject = this.value;
+                if (selectedSubject) {
+                    populateTopicFilter(selectedSubject);
+                    document.getElementById('topicFilterContainer').style.display = 'block';
+                } else {
+                    document.getElementById('topicFilterContainer').style.display = 'none';
+                    renderEmptySubjectState();
+                }
+            });
+            
+            document.getElementById('topicFilter').addEventListener('change', filterSubjectNotes);
+        });
+
+        // Initialize tab functionality
+        function initTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+
+        // Render daily class notes
+        function renderDailyNotes(notes) {
+            const notesGrid = document.getElementById('dailyNotesGrid');
+            notesGrid.innerHTML = '';
+            
+            if (notes.length === 0) {
+                notesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No notes found</h3>
+                        <p>Try changing your filter criteria</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            notes.forEach(note => {
+                const card = createNoteCard(note);
+                notesGrid.appendChild(card);
+            });
+        }
+
+        // Filter daily notes by date
+        function filterDailyNotes() {
+            const selectedDate = document.getElementById('dateFilter').value;
+            
+            if (selectedDate === 'all') {
+                renderDailyNotes(dailyNotes);
+            } else {
+                const filteredNotes = dailyNotes.filter(note => note.date === selectedDate);
+                renderDailyNotes(filteredNotes);
+            }
+        }
+
+        // Populate topic filter based on selected subject
+        function populateTopicFilter(subject) {
+            const topicFilter = document.getElementById('topicFilter');
+            topicFilter.innerHTML = '<option value="">Select a topic</option>';
+            
+            if (subject && subjectTopics[subject]) {
+                subjectTopics[subject].forEach(topic => {
+                    const option = document.createElement('option');
+                    option.value = topic.toLowerCase().replace(' ', '-');
+                    option.textContent = topic;
+                    topicFilter.appendChild(option);
+                });
+            }
+        }
+
+        // Filter and render notes by subject and topic
+        function filterSubjectNotes() {
+            const subject = document.getElementById('subjectFilter').value;
+            const topic = document.getElementById('topicFilter').value;
+            
+            if (!subject || !topic) {
+                renderEmptySubjectState();
+                return;
+            }
+            
+            const key = `${subject}-${topic}`;
+            const notes = subjectNotes[key] || [];
+            
+            const notesGrid = document.getElementById('subjectNotesGrid');
+            notesGrid.innerHTML = '';
+            
+            if (notes.length === 0) {
+                notesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No notes found for this topic</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            notes.forEach(note => {
+                const card = createNoteCard(note);
+                notesGrid.appendChild(card);
+            });
+        }
+
+        // Render empty state for subject notes
+        function renderEmptySubjectState() {
+            const notesGrid = document.getElementById('subjectNotesGrid');
+            notesGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Select a subject and topic to view notes</h3>
+                </div>
+            `;
+        }
+
+        // Render seniors' notes as accordions
+        function renderSeniorsNotes(subjects) {
+            const accordion = document.getElementById('seniorsNotesAccordion');
+            accordion.innerHTML = '';
+            
+            subjects.forEach(subject => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'accordion';
+                
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                header.innerHTML = `
+                    <span>${subject.subject}</span>
+                    <i class="fas fa-chevron-down"></i>
+                `;
+                
+                const content = document.createElement('div');
+                content.className = 'accordion-content';
+                
+                const contentInner = document.createElement('div');
+                contentInner.className = 'accordion-content-inner';
+                
+                // Create notes grid inside accordion
+                const notesGrid = document.createElement('div');
+                notesGrid.className = 'notes-grid';
+                
+                subject.notes.forEach(note => {
+                    const card = createNoteCard(note);
+                    notesGrid.appendChild(card);
+                });
+                
+                contentInner.appendChild(notesGrid);
+                content.appendChild(contentInner);
+                
+                // Add click event to toggle accordion
+                header.addEventListener('click', () => {
+                    header.querySelector('i').classList.toggle('fa-chevron-up');
+                    header.querySelector('i').classList.toggle('fa-chevron-down');
+                    content.classList.toggle('active');
+                });
+                
+                accordionItem.appendChild(header);
+                accordionItem.appendChild(content);
+                accordion.appendChild(accordionItem);
+            });
+        }
+
+        // Create a note card element
+        function createNoteCard(note) {
+            const card = document.createElement('div');
+            card.className = 'note-card';
+            
+            // Determine icon based on file type
+            let fileIcon = 'fa-file';
+            if (note.fileType === 'pdf') fileIcon = 'fa-file-pdf';
+            if (note.fileType === 'ppt') fileIcon = 'fa-file-powerpoint';
+            
+            card.innerHTML = `
+                <div class="note-header">
+                    <h3 class="note-title">${note.title}</h3>
+                    <i class="fas ${fileIcon}"></i>
+                </div>
+                <div class="note-body">
+                    <div class="note-meta">
+                        <span class="note-subject">${note.subject || ''}</span>
+                        <span class="note-date">${formatDate(note.date)}</span>
+                    </div>
+                    <p class="note-description">${note.description}</p>
+                    ${note.uploadedBy ? `<p><small>Uploaded by: ${note.uploadedBy}</small></p>` : ''}
+                    <div class="note-actions">
+                        <button class="action-button" onclick="viewNote(${note.id})">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="action-button" onclick="downloadNote(${note.id})">
+                            <i class="fas fa-download"></i> Download (${note.fileSize})
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Format date to be more readable
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Go to home/dashboard function
+        function goHome() {
+            // In a real application, this would navigate to the home page
+            alert('Navigating to home page...');
+            // window.location.href = 'dashboard.html';
+        }
+
+        // View note function (placeholder)
+        function viewNote(noteId) {
+            alert(`Opening note ID: ${noteId} for viewing`);
+            // In a real app, this would open the note in a viewer
+        }
+
+        // Download note function (placeholder)
+        function downloadNote(noteId) {
+            alert(`Downloading note ID: ${noteId}`);
+            // In a real app, this would trigger the download
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal - Notes Section</title>
+    {/* Font Awesome for icons */}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3498db;      /* Blue */
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;    /* Dark Blue/Gray */
+            --light: #f5f6fa;        /* Light Gray */
+            --gray: #95a5a6;         /* Medium Gray */
+            --dark: #34495e;         /* Dark Gray */
+            --danger: #e74c3c;       /* Red */
+            --success: #2ecc71;      /* Green */
+            --warning: #f39c12;      /* Yellow/Orange */
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR STYLES ===== */
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navbar-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: none; border: none; color: white; font-size: 1.2rem;
+            cursor: pointer; display: flex; align-items: center; transition: var(--transition);
+        }
+        .back-button:hover { color: var(--light); }
+
+        /* ===== MAIN CONTENT CONTAINER ===== */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 1rem; margin-top: 5rem; /* Adjust based on navbar height */
+        }
+
+        /* ===== TABS NAVIGATION STYLES ===== */
+        .tabs {
+            display: flex; background-color: white; border-radius: 8px;
+            box-shadow: var(--card-shadow); margin-bottom: 2rem; overflow: hidden;
+        }
+        .tab-button {
+            flex: 1; padding: 1rem; text-align: center; background-color: white;
+            border: none; border-bottom: 3px solid transparent; cursor: pointer;
+            transition: var(--transition); font-weight: 600; color: var(--dark);
+        }
+        .tab-button.active { border-bottom-color: var(--primary); color: var(--primary); }
+        .tab-button:hover:not(.active) { background-color: var(--light); }
+
+        /* ===== CONTENT SECTIONS STYLES ===== */
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Filter controls */
+        .filter-controls { margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .filter-label { font-weight: 600; margin-right: 0.5rem; }
+        .filter-select, .filter-input { padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid #ddd; min-width: 200px; background-color: white; }
+
+        /* ===== UPLOAD SECTION STYLES ===== */
+         .upload-section {
+             background-color: #e9f2fa; /* Light blue background */
+             border: 2px dashed var(--primary);
+             border-radius: 8px;
+             padding: 1.5rem;
+             margin-bottom: 2rem;
+             text-align: center;
+         }
+         .upload-section h2 {
+             font-size: 1.2rem;
+             font-weight: 600;
+             color: var(--secondary);
+             margin-bottom: 1rem;
+         }
+         .upload-form { display: none; /* Hidden initially */ margin-top: 1rem; padding: 1rem; background-color: white; border-radius: 6px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); text-align: left; }
+         .form-group { margin-bottom: 1rem; }
+         .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.9rem; }
+         .form-group input[type="text"],
+         .form-group input[type="date"],
+         .form-group select,
+         .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
+          .form-group input[type="file"] { padding: 0.3rem; }
+         .form-group textarea { resize: vertical; min-height: 60px; }
+         .form-actions { text-align: right; margin-top: 1rem; }
+         .drag-drop-area {
+             border: 2px dashed var(--gray);
+             border-radius: 6px;
+             padding: 2rem;
+             margin-top: 1rem;
+             background-color: var(--light);
+             color: var(--gray);
+             font-weight: 500;
+         }
+         .drag-drop-area i { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+
+        /* ===== NOTES CARD STYLES ===== */
+        .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .note-card { background-color: white; border-radius: 8px; box-shadow: var(--card-shadow); overflow: hidden; transition: var(--transition); }
+        .note-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+        .note-header { padding: 1rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .note-title { font-size: 1.1rem; font-weight: 600; color: var(--secondary); }
+        .note-body { padding: 1rem; }
+        .note-meta { display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--gray); font-size: 0.9rem; }
+        .note-subject { background-color: #f0f7ff; color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+        .note-date { color: var(--gray); }
+        .note-description { margin-bottom: 1rem; color: var(--dark); }
+        .note-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+        .action-button { background-color: var(--light); border: none; padding: 0.5rem; border-radius: 4px; color: var(--dark); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; }
+        .action-button:hover { background-color: var(--primary); color: white; }
+        .action-button.edit:hover { background-color: var(--warning); color: white; }
+        .action-button.delete:hover { background-color: var(--danger); color: white; }
+
+
+        /* ===== ACCORDION STYLES (Not used in Teacher View for now) ===== */
+        /* ... (Accordion styles can be kept if needed later) ... */
+
+        .empty-state { text-align: center; padding: 2rem; color: var(--gray); }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; }
+
+        /* General Button Style */
+        .button {
+             padding: 0.7rem 1.5rem;
+             border: none;
+             border-radius: 6px;
+             font-weight: 600;
+             cursor: pointer;
+             transition: var(--transition);
+             display: inline-flex;
+             align-items: center;
+             gap: 0.5rem;
+        }
+        .button-primary { background-color: var(--primary); color: white; }
+        .button-primary:hover { background-color: var(--primary-dark); }
+        .button-secondary { background-color: var(--secondary); color: white; }
+        .button-secondary:hover { background-color: var(--dark); }
+        .button-danger { background-color: var(--danger); color: white; }
+        .button-danger:hover { background-color: #c0392b; } /* Darker red */
+        .button-light { background-color: var(--light); color: var(--dark); border: 1px solid #ddd; }
+        .button-light:hover { background-color: #e0e0e0; }
+
+
+        /* ===== RESPONSIVE STYLES ===== */
+        @media (max-width: 768px) {
+            .tabs { flex-direction: column; }
+            .tab-button { border-right: none; border-bottom: 1px solid #eee; }
+            .tab-button.active { border-bottom-color: var(--primary); border-right: none; }
+            .notes-grid { grid-template-columns: 1fr; }
+            .filter-controls { flex-direction: column; align-items: stretch; }
+            .filter-select, .filter-input { width: 100%; }
+            .upload-section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-title">
+                <button class="back-button" onclick="goBack()"> <i class="fas fa-arrow-left"></i> </button>
+                <h1>Notes - Teacher Panel</h1>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button active" data-tab="daily-notes"> <i class="fas fa-calendar-day"></i> Daily Class Notes </button>
+            <button class="tab-button" data-tab="subject-notes"> <i class="fas fa-book-bookmark"></i> Topic Notes </button>
+            <!-- {/* Removed Seniors' Notes Tab */} -->
+        </div>
+
+        <!-- {/* Daily Class Notes Tab Content */} -->
+        <div class="tab-content active" id="daily-notes">
+            <!-- {/* Upload Section for Daily Notes */} -->
+            <div class="upload-section">
+                 <h2>Upload Daily Class Note</h2>
+                 <button class="button button-primary" onclick="toggleUploadForm('dailyUploadForm')"> <i class="fas fa-plus"></i> Add New Note </button>
+                 <div id="dailyUploadForm" class="upload-form">
+                     <div class="form-group">
+                         <label for="dailyTitle">Title</label>
+                         <input type="text" id="dailyTitle" placeholder="e.g., Introduction to Algorithms">
+                     </div>
+                     <div class="form-group">
+                         <label for="dailySubject">Subject</label>
+                         <select id="dailySubject">
+                             <option value="computer-science">Computer Science</option>
+                             <option value="mathematics">Mathematics</option>
+                             <option value="physics">Physics</option>
+                             <option value="chemistry">Chemistry</option>
+                         </select>
+                     </div>
+                      <div class="form-group">
+                         <label for="dailyDate">Class Date</label>
+                         <input type="date" id="dailyDate">
+                     </div>
+                     <div class="form-group">
+                         <label for="dailyDescription">Description (Optional)</label>
+                         <textarea id="dailyDescription" rows="2"></textarea>
+                     </div>
+                     <div class="form-group">
+                         <label>Upload File (PDF/PPT)</label>
+                         <div class="drag-drop-area">
+                             <i class="fas fa-cloud-upload-alt"></i>
+                             <span>Drag & drop file here or</span>
+                             <input type="file" id="dailyFile" class="mt-2" accept=".pdf,.ppt,.pptx">
+                         </div>
+                     </div>
+                     <div class="form-actions">
+                         <button class="button button-light" type="button" onclick="toggleUploadForm('dailyUploadForm')">Cancel</button>
+                         <button class="button button-success" type="button" onclick="uploadDailyNote()"> <i class="fas fa-upload"></i> Upload Note</button>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="filter-controls">
+                <div>
+                    <span class="filter-label">Filter by Date:</span>
+                    <select class="filter-select" id="dateFilter">
+                        <option value="all">All Dates</option>
+                        <option value="2025-04-05">Apr 5, 2025</option>
+                        <option value="2025-04-04">Apr 4, 2025</option>
+                        <option value="2025-04-03">Apr 3, 2025</option>
+                        <option value="2025-04-02">Apr 2, 2025</option>
+                    </select>
+                </div>
+                 <div>
+                    <span class="filter-label">My Uploads Only:</span>
+                    <input type="checkbox" id="myUploadsFilterDaily" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded">
+                </div>
+            </div>
+
+            <div class="notes-grid" id="dailyNotesGrid">
+                <!-- {/* Daily notes will be populated here */} -->
+            </div>
+        </div>
+
+        <!-- {/* Notes by Subject/Topic Tab Content */} -->
+        <div class="tab-content" id="subject-notes">
+             <!-- {/* Upload Section for Topic Notes */} -->
+             <div class="upload-section">
+                 <h2>Upload Topic Note</h2>
+                 <button class="button button-primary" onclick="toggleUploadForm('topicUploadForm')"> <i class="fas fa-plus"></i> Add New Topic Note </button>
+                 <div id="topicUploadForm" class="upload-form">
+                     <div class="form-group">
+                         <label for="topicTitle">Note Title</label>
+                         <input type="text" id="topicTitle" placeholder="e.g., Binary Search Trees">
+                     </div>
+                      <div class="form-group">
+                         <label for="topicSubject">Subject</label>
+                         <select id="topicSubject" onchange="populateTopicDropdown(this.value, 'topicTopic')">
+                             <option value="">Select Subject</option>
+                             <option value="mathematics">Mathematics</option>
+                             <option value="computer-science">Computer Science</option>
+                             <option value="physics">Physics</option>
+                             <option value="chemistry">Chemistry</option>
+                         </select>
+                     </div>
+                      <div class="form-group">
+                         <label for="topicTopic">Topic</label>
+                         <select id="topicTopic">
+                             <option value="">Select Subject First</option>
+                             {/* Topics populated by JS */}
+                         </select>
+                     </div>
+                     <div class="form-group">
+                         <label for="topicDescription">Description (Optional)</label>
+                         <textarea id="topicDescription" rows="2"></textarea>
+                     </div>
+                      <div class="form-group">
+                         <label>Tags (Optional)</label>
+                         <div class="flex flex-wrap gap-2">
+                             <label class="flex items-center gap-1 text-sm"><input type="checkbox" value="Exam Important" class="form-checkbox h-4 w-4"> Exam Important</label>
+                             <label class="flex items-center gap-1 text-sm"><input type="checkbox" value="For Revision" class="form-checkbox h-4 w-4"> For Revision</label>
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label>Upload File (PDF/PPT/DOCX/Link)</label>
+                          <div class="drag-drop-area">
+                             <i class="fas fa-cloud-upload-alt"></i>
+                             <span>Drag & drop file here or</span>
+                             <input type="file" id="topicFile" class="mt-2" accept=".pdf,.ppt,.pptx,.doc,.docx">
+                             <span class="block my-2">OR</span>
+                             <input type="text" id="topicLink" placeholder="Paste external link here (e.g., YouTube)" class="w-full">
+                         </div>
+                     </div>
+                     <div class="form-actions">
+                         <button class="button button-light" type="button" onclick="toggleUploadForm('topicUploadForm')">Cancel</button>
+                         <button class="button button-success" type="button" onclick="uploadTopicNote()"> <i class="fas fa-upload"></i> Upload Note</button>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="filter-controls">
+                <div>
+                    <span class="filter-label">Select Subject:</span>
+                    <select class="filter-select" id="subjectFilter" onchange="handleSubjectFilterChange(this.value)">
+                        <option value="">Select a subject</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                    </select>
+                </div>
+                <div id="topicFilterContainer" style="display: none;">
+                    <span class="filter-label">Select Topic:</span>
+                    <select class="filter-select" id="topicFilter">
+                        {/* Topics populated by JS */}
+                    </select>
+                </div>
+                 <div>
+                    <span class="filter-label">My Uploads Only:</span>
+                    <input type="checkbox" id="myUploadsFilterTopic" class="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded">
+                </div>
+            </div>
+
+            <div class="notes-grid" id="subjectNotesGrid">
+                <div class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Select a subject to view topic notes</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- {/* Seniors' Notes Tab Content - Removed for Teacher View */} -->
+         <div class="tab-content" id="seniors-notes"> ... </div> 
+    </div>
+
+    <script>
+        // ===== DUMMY DATA (Teacher Focused - Assume current teacher ID is 1) =====
+        const currentTeacherId = 1; // Example ID for the logged-in teacher
+        const teachers = { 1: "Dr. Sharma", 2: "Dr. Joshi", 3: "Prof. Chen" };
+
+        const dailyNotes = [
+            { id: 1, title: "Hashing Introduction", subject: "Data Structures", date: "2025-04-06", description: "Class PPT covering hash functions...", fileType: "pdf", fileSize: "1.9 MB", teacherId: 1 },
+            { id: 2, title: "Linked Lists Part 1", subject: "Data Structures", date: "2025-04-05", description: "Introduction to singly linked lists...", fileType: "ppt", fileSize: "2.3 MB", teacherId: 1 },
+            { id: 3, title: "Process Scheduling", subject: "Operating Systems", date: "2025-04-04", description: "FCFS, SJF, Round Robin algorithms...", fileType: "ppt", fileSize: "4.1 MB", teacherId: 2 },
+            { id: 4, title: "Binary Trees", subject: "Data Structures", date: "2025-04-04", description: "Implementation and traversal...", fileType: "pdf", fileSize: "3.5 MB", teacherId: 1 },
+        ];
+
+        const subjectTopics = { "mathematics": ["Calculus", "Linear Algebra"], "computer-science": ["Data Structures", "Algorithms"], "physics": ["Mechanics", "Quantum Physics"], "chemistry": ["Organic Chemistry"] };
+
+        const subjectNotes = {
+            "computer-science-data-structures": [
+                { id: 201, title: "Arrays and Linked Lists", description: "Comparison and implementation...", uploadedByTeacherId: 3, date: "2025-03-25", fileType: "pdf", fileSize: "2.4 MB", tags: [] },
+                { id: 202, title: "Stack and Queue Implementation", description: "Implementation details...", uploadedByTeacherId: 3, date: "2025-03-28", fileType: "ppt", fileSize: "1.9 MB", tags: [] }
+            ],
+            "computer-science-algorithms": [
+                { id: 203, title: "Sorting Algorithms", description: "Analysis of common sorting algos.", uploadedByTeacherId: 1, date: "2025-03-22", fileType: "pdf", fileSize: "2.7 MB", tags: ["Exam Important"] }
+            ]
+            // Add more dummy data as needed
+        };
+
+        // ===== EVENT LISTENERS AND FUNCTIONS =====
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+            renderDailyNotes(dailyNotes); // Initial render
+            // Initial state for subject notes
+            document.getElementById('subjectNotesGrid').innerHTML = `<div class="empty-state"><i class="fas fa-book-open"></i><h3>Select a subject to view topic notes</h3></div>`;
+
+            // Filter listeners
+            document.getElementById('dateFilter').addEventListener('change', filterDailyNotes);
+            document.getElementById('myUploadsFilterDaily').addEventListener('change', filterDailyNotes);
+            document.getElementById('subjectFilter').addEventListener('change', handleSubjectFilterChange);
+            document.getElementById('topicFilter').addEventListener('change', filterSubjectNotes);
+            document.getElementById('myUploadsFilterTopic').addEventListener('change', filterSubjectNotes);
+        });
+
+        function initTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    document.getElementById(button.getAttribute('data-tab')).classList.add('active');
+                });
+            });
+        }
+
+        function renderDailyNotes(notes) {
+            const notesGrid = document.getElementById('dailyNotesGrid');
+            notesGrid.innerHTML = '';
+            if (notes.length === 0) {
+                notesGrid.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-search"></i><h3>No notes found</h3><p>Try changing your filter criteria</p></div>`;
+                return;
+            }
+            notes.forEach(note => {
+                const card = createNoteCard(note, true); // Pass true for daily notes
+                notesGrid.appendChild(card);
+            });
+        }
+
+        function filterDailyNotes() {
+            const selectedDate = document.getElementById('dateFilter').value;
+            const myUploadsOnly = document.getElementById('myUploadsFilterDaily').checked;
+            let filteredNotes = dailyNotes;
+
+            if (selectedDate !== 'all') {
+                filteredNotes = filteredNotes.filter(note => note.date === selectedDate);
+            }
+            if (myUploadsOnly) {
+                filteredNotes = filteredNotes.filter(note => note.teacherId === currentTeacherId);
+            }
+            renderDailyNotes(filteredNotes);
+        }
+
+        function handleSubjectFilterChange() {
+            const selectedSubject = document.getElementById('subjectFilter').value;
+            populateTopicFilter(selectedSubject); // Populate topics based on subject
+            filterSubjectNotes(); // Filter notes based on subject (and potentially 'All Topics')
+        }
+
+
+        function populateTopicFilter(subjectKey) {
+            const topicFilter = document.getElementById('topicFilter');
+            const topicContainer = document.getElementById('topicFilterContainer');
+            topicFilter.innerHTML = '<option value="">All Topics</option>'; // Add 'All Topics' option
+
+            if (subjectKey && subjectTopics[subjectKey]) {
+                subjectTopics[subjectKey].forEach(topic => {
+                    const option = document.createElement('option');
+                    const topicValue = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                    option.value = topicValue;
+                    option.textContent = topic;
+                    topicFilter.appendChild(option);
+                });
+                topicContainer.style.display = 'block'; // Show topic filter
+            } else {
+                topicContainer.style.display = 'none'; // Hide if no subject selected
+            }
+        }
+
+
+        function filterSubjectNotes() {
+            const subjectKey = document.getElementById('subjectFilter').value;
+            const topicKey = document.getElementById('topicFilter').value;
+            const myUploadsOnly = document.getElementById('myUploadsFilterTopic').checked;
+            const notesGrid = document.getElementById('subjectNotesGrid');
+            notesGrid.innerHTML = '';
+
+            if (!subjectKey) {
+                 notesGrid.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-book-open"></i><h3>Select a subject first</h3></div>`;
+                 return;
+            }
+
+            let notesToShow = [];
+            const topics = topicKey ? [topicKey] : (subjectTopics[subjectKey] || []); // Get specific topic or all topics for subject
+
+            topics.forEach(topic => {
+                 const currentTopicKey = topicKey ? topic : topic.toLowerCase().replace(/[^a-z0-9]+/g, '-'); // Use provided key or generate from topic name
+                const dataKey = `${subjectKey}-${currentTopicKey}`;
+                notesToShow = notesToShow.concat(subjectNotes[dataKey] || []);
+            });
+
+            if (myUploadsOnly) {
+                notesToShow = notesToShow.filter(note => note.uploadedByTeacherId === currentTeacherId);
+            }
+
+            renderNotes('subjectNotesGrid', notesToShow); // Use the generic render function
+        }
+
+
+        function createNoteCard(note, isDaily = false) {
+            const card = document.createElement('div');
+            card.className = 'note-card';
+            let fileIcon = 'fa-file';
+            if (note.fileType === 'pdf') fileIcon = 'fa-file-pdf';
+            if (note.fileType === 'ppt' || note.fileType === 'pptx') fileIcon = 'fa-file-powerpoint';
+            if (note.fileType === 'doc' || note.fileType === 'docx') fileIcon = 'fa-file-word';
+            if (note.fileType === 'link') fileIcon = 'fa-link';
+
+            const teacherName = isDaily ? teachers[note.teacherId] : teachers[note.uploadedByTeacherId];
+            const isOwnNote = isDaily ? note.teacherId === currentTeacherId : note.uploadedByTeacherId === currentTeacherId;
+
+            card.innerHTML = `
+                <div class="note-header">
+                    <h3 class="note-title">${note.title}</h3>
+                    <i class="fas ${fileIcon}"></i>
+                </div>
+                <div class="note-body">
+                    <div class="note-meta">
+                        <span class="note-subject">${note.subject || ''}</span>
+                        <span class="note-date">${formatDate(note.date)}</span>
+                    </div>
+                    <p class="note-description">${note.description || ''}</p>
+                    <p class="text-xs text-gray-500 mb-3">Uploaded by: ${teacherName || 'Unknown'}</p>
+                    ${note.tags && note.tags.length > 0 ? `<div class="mb-3 flex gap-2 flex-wrap">${note.tags.map(tag => `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${tag === 'Exam Important' ? 'bg-red-100 text-red-800' : 'bg-purple-100 text-purple-800'}">${tag}</span>`).join('')}</div>` : ''}
+                    <div class="note-actions">
+                        ${isOwnNote ? `
+                        <button class="action-button edit" onclick="editNote(${note.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-button delete" onclick="deleteNote(${note.id})">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                        ` : `
+                         <button class="action-button" onclick="viewNote(${note.id})">
+                             <i class="fas fa-eye"></i> View
+                         </button>
+                         <button class="action-button" onclick="downloadNote(${note.id})">
+                             <i class="fas fa-download"></i> Download (${note.fileSize})
+                         </button>
+                        `}
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function formatDate(dateString) { const options = { year: 'numeric', month: 'short', day: 'numeric' }; return new Date(dateString).toLocaleDateString(undefined, options); }
+        function goBack() { alert('Navigating back...'); /* Replace with actual navigation */ }
+        function viewNote(noteId) { alert(`Viewing note ID: ${noteId}`); }
+        function downloadNote(noteId) { alert(`Downloading note ID: ${noteId}`); }
+        function editNote(noteId) { alert(`Editing note ID: ${noteId}`); /* Open edit form */ }
+        function deleteNote(noteId) { if(confirm(`Are you sure you want to delete note ID: ${noteId}?`)) { alert(`Deleting note ID: ${noteId}`); /* Perform delete */ } }
+
+        // --- Upload Form Logic ---
+        function toggleUploadForm(formId) {
+            const form = document.getElementById(formId);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function uploadDailyNote() {
+            // Get data from dailyUploadForm inputs
+            alert('Simulating daily note upload...');
+            toggleUploadForm('dailyUploadForm'); // Hide form after simulated upload
+            // Add logic to add to dailyNotes array and re-render
+        }
+
+         function uploadTopicNote() {
+            // Get data from topicUploadForm inputs
+            alert('Simulating topic note upload...');
+            toggleUploadForm('topicUploadForm'); // Hide form after simulated upload
+             // Add logic to add to subjectNotes object and re-render
+        }
+
+        // Helper to populate topic dropdown in the upload form
+         function populateTopicDropdown(subjectKey, dropdownId) {
+            const topicDropdown = document.getElementById(dropdownId);
+            topicDropdown.innerHTML = '<option value="">Select Topic</option>'; // Reset
+            if (subjectKey && subjectTopics[subjectKey]) {
+                subjectTopics[subjectKey].forEach(topic => {
+                    const option = document.createElement('option');
+                    const topicValue = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                    option.value = topicValue;
+                    option.textContent = topic;
+                    topicDropdown.appendChild(option);
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>

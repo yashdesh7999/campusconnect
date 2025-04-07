@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'LucideIcons';
+        src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
+      }
+      .lucide {
+        font-family: 'LucideIcons';
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: inline-block;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #4b4242;
+      }
+      .transition-all {
+        transition: all 0.3s ease-in-out;
+      }
+      .notification-badge {
+        position: absolute; top: -5px; right: -5px; background-color: #ef4444; color: white; border-radius: 9999px; padding: 0.1rem 0.4rem; font-size: 0.7rem; font-weight: 600; line-height: 1;
+      }
+      /* Navbar Dropdown Styles */
+      .navbar-dropdown-menu {
+          display: none; position: absolute; left: 0; top: 100%; margin-top: 0.5rem; background-color: white; border-radius: 0.375rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); z-index: 50; min-width: 12rem; padding-top: 0.25rem; padding-bottom: 0.25rem; border: 1px solid #e5e7eb;
+      }
+      #profileDropdownMenu { left: auto; right: 0; }
+      .navbar-dropdown-menu.show { display: block; }
+      .navbar-dropdown-item { display: block; padding: 0.5rem 1rem; font-size: 0.875rem; color: #374151; text-decoration: none; white-space: nowrap; }
+      .navbar-dropdown-item:hover { background-color: #f3f4f6; }
+      .navbar-dropdown-toggle .lucide { margin-left: 0.25rem; transition: transform 0.2s ease-in-out; }
+      .navbar-dropdown-toggle.open .lucide { transform: rotate(180deg); }
+      /* Mobile Menu Styles */
+      #mobileMenu { display: none; border-top: 1px solid #e5e7eb; }
+      #mobileMenu.show { display: block; }
+      .mobile-menu-link { display: block; padding: 0.75rem 1rem; color: #374151; font-weight: 500; text-decoration: none; }
+      .mobile-menu-link:hover { background-color: #f3f4f6; }
+      .mobile-submenu-link { display: block; padding: 0.5rem 1rem 0.5rem 2rem; color: #4b5563; font-size: 0.875rem; text-decoration: none; }
+      .mobile-submenu-link:hover { background-color: #f3f4f6; }
+      /* Styles for Read More functionality */
+      .post-caption-truncated .caption-more { display: none; }
+      .post-caption-expanded .caption-less { display: none; }
+      .post-caption-expanded .caption-more { display: inline; }
+      .post-caption-expanded .read-more-btn::after { content: 'Read Less'; }
+      .post-caption-truncated .read-more-btn::after { content: 'Read More'; }
+      .post-caption-short .read-more-btn { display: none; }
+      .ram{
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px 0;
+        
+
+        
+      }
+      .ram img{
+        width:20vw;
+        height: 4vw;
+        margin: 1vw;
+      }
+      .ram .logon 
+      {
+        width: 8vw;
+        height: 5vw;
+      }
+      .ghanti{
+        width:1.5vw;
+        margin: 0;
+        padding: 0;
+      }
+      .chand{
+        width: 3.5vw;
+        margin: 0;
+        padding: 0;
+      }
+     
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+               <div class="ram">
+                <img src="iist-iip-iimr-logo2 (1).png" alt="logo" class="logon">
+                <img src="iist-scaled.webp" alt="iist">
+                <img src="iist-iip-scaled.webp" alt="iip">
+                <img src="iimr-scaled.webp" alt="iimr">
+            </div>
+    <header class="sticky top-0 z-40 bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                 <a href="#" class="flex items-center space-x-2">
+                    <!-- {/* Graduation cap icon removed */} -->
+                    <span class="text-xl font-bold text-gray-800">CampusConnect</span>
+                 </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-1 lg:space-x-4">
+                <a href="student-home.html" class="px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors">Home</a>
+                <div class="relative">
+                    <button id="academicsDropdownToggle" class="navbar-dropdown-toggle px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors flex items-center"> Academics <span class="lucide text-xs"><b>\/</b></span> </button>
+                    <div id="academicsDropdownMenu" class="navbar-dropdown-menu"> <a href="student-notes.html" class="navbar-dropdown-item">Notes</a> <a href="#" class="navbar-dropdown-item">Question Bank</a> <a href="student-pyqs.html" class="navbar-dropdown-item">PYQs</a> <a href="#" class="navbar-dropdown-item">Timetable</a> </div>
+                </div>
+                 <div class="relative">
+                    <button id="eventsDropdownToggle" class="navbar-dropdown-toggle px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors flex items-center"> Events <span class="lucide text-xs"><b>\/</b></span> </button>
+                    <div id="eventsDropdownMenu" class="navbar-dropdown-menu"> <a href="student-events.html" class="navbar-dropdown-item">All Events</a> <a href="student-calender.html" class="navbar-dropdown-item">Event Calendar</a>  </div>
+                </div>
+                 <div class="relative">
+                    <button id="communityDropdownToggle" class="navbar-dropdown-toggle px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors flex items-center"> Community <span class="lucide text-xs"><b>\/</b></span> </button>
+                    <div id="communityDropdownMenu" class="navbar-dropdown-menu"> <a href="student-clubs-n-groups.html" class="navbar-dropdown-item">Clubs & Groups</a> <a href="#" class="navbar-dropdown-item">Mentorship</a> <a href="#" class="navbar-dropdown-item">Chats</a> </div>
+                </div>
+                 <a href="#" class="px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors">Feedback</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button class="relative text-gray-500 hover:text-gray-700 focus:outline-none hidden sm:inline-flex"> <span class="lucide text-xl"> <img src="ghanti.png" alt="ye ghanti hai" class="ghanti"></span> <span class="notification-badge">3</span> </button>
+                <button id="darkModeToggle" class="text-gray-500 hover:text-gray-700 focus:outline-none hidden sm:inline-flex"> <span class="lucide text-xl"><img src="chand.png" alt="" class="chand"></span> </button>
+                <div class="relative">
+                    <button id="profileDropdownToggle" class="navbar-dropdown-toggle flex items-center focus:outline-none"> <img src="https://placehold.co/32x32/fecdd3/1f2937?text=R" alt="User Profile" class="w-8 h-8 rounded-full border-2 border-gray-300 hover:border-blue-500 transition-all"> </button>
+                    <div id="profileDropdownMenu" class="navbar-dropdown-menu"> <a href="#" class="navbar-dropdown-item">My Profile</a> <a href="#" class="navbar-dropdown-item">Settings</a> <hr class="my-1 border-gray-200"> <a href="login.html" class="navbar-dropdown-item">Logout</a> </div>
+                </div>
+                 <button id="hamburgerButton" class="md:hidden text-gray-600 hover:text-gray-800 focus:outline-none"> <span class="lucide text-2xl">menu</span> </button>
+            </div>
+        </nav>
+
+        <div id="mobileMenu" class="md:hidden bg-white">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="mobile-menu-link">Home</a>
+                <span class="block px-4 pt-3 pb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Academics</span>
+                <a href="#" class="mobile-submenu-link">Notes</a> <a href="#" class="mobile-submenu-link">Question Bank</a> <a href="#" class="mobile-submenu-link">PYQs</a> <a href="#" class="mobile-submenu-link">Timetable</a>
+                <span class="block px-4 pt-3 pb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Events</span>
+                 <a href="#" class="mobile-submenu-link">All Events</a> <a href="#" class="mobile-submenu-link">Event Calendar</a> <a href="#" class="mobile-submenu-link">Upcoming Events</a>
+                <span class="block px-4 pt-3 pb-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Community</span>
+                <a href="#" class="mobile-submenu-link">Clubs & Groups</a> <a href="#" class="mobile-submenu-link">Mentorship</a> <a href="#" class="mobile-submenu-link">Chats</a>
+                <a href="#" class="mobile-menu-link border-t mt-2 pt-2">Feedback</a>
+                 <a href="#" class="mobile-menu-link"><span class="lucide text-base mr-2">bell</span>Notifications</a> <a href="#" class="mobile-menu-link"><span class="lucide text-base mr-2">moon</span>Dark Mode</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12">
+        <section id="dashboard">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Good morning, Ravi!</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow"> <h3 class="font-semibold text-lg mb-3 text-gray-800">Today's Classes</h3> <div class="space-y-2 text-sm text-gray-600"> <div class="flex justify-between items-center"> <span><span class="font-medium">09:00 AM:</span> Data Structures</span> <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Room 301</span> </div> <div class="flex justify-between items-center"> <span><span class="font-medium">11:00 AM:</span> Web Development</span> <a href="#" class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded hover:bg-green-200">Join Online</a> </div> <div class="flex justify-between items-center"> <span><span class="font-medium">02:00 PM:</span> Algo Lab</span> <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Lab 2</span> </div> </div> </div> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow"> <h3 class="font-semibold text-lg mb-3 text-gray-800">Upcoming Deadlines</h3> <div class="space-y-2 text-sm text-gray-600"> <div class="flex justify-between items-center"> <span><span class="font-medium">OS Report:</span> Operating Systems</span> <span class="text-red-500 font-medium text-xs">Due in 2 days</span> </div> <div class="flex justify-between items-center"> <span><span class="font-medium">Project Phase 1:</span> Web Dev</span> <span class="text-orange-500 font-medium text-xs">Due in 5 days</span> </div> <div class="flex justify-between items-center"> <span><span class="font-medium">Quiz 3:</span> Data Structures</span> <span class="text-gray-500 font-medium text-xs">Due in 7 days</span> </div> </div> </div> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1"> <h3 class="font-semibold text-lg mb-3 text-gray-800">Latest Announcement</h3> <div class="space-y-2 text-sm text-gray-600"> <p class="font-medium">Mid-Term Schedule Update</p> <p class="line-clamp-2">The mid-term examination schedule has been revised. Please check the academic portal for details...</p> <a href="#" class="text-blue-600 hover:underline text-xs font-medium">View More</a> </div> </div> </div> <div class="mt-6 bg-white p-3 rounded-lg shadow overflow-x-auto"> <div class="flex space-x-4 justify-center"> <div class="text-center"> <div class="text-xs text-gray-500">Mon</div> <div class="font-semibold text-lg">3</div> </div> <div class="text-center relative"> <div class="text-xs text-gray-500">Tue</div> <div class="font-semibold text-lg text-blue-600">4</div> <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full"></span> </div> <div class="text-center"> <div class="text-xs text-gray-500">Wed</div> <div class="font-semibold text-lg">5</div> </div> <div class="text-center relative"> <div class="text-xs text-gray-500">Thu</div> <div class="font-semibold text-lg text-blue-600">6</div> <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full"></span> </div> <div class="text-center"> <div class="text-xs text-gray-500">Fri</div> <div class="font-semibold text-lg">7</div> </div> <div class="text-center"> <div class="text-xs text-gray-500">Sat</div> <div class="font-semibold text-lg">8</div> </div> <div class="text-center"> <div class="text-xs text-gray-500">Sun</div> <div class="font-semibold text-lg">9</div> </div> </div> </div>
+        </section>
+
+        <section id="recent-posts">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Recent Posts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 max-w-2xl mx-auto">
+                <div class="post-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"> <div class="flex items-center justify-between p-3 border-b border-gray-100"> <div class="flex items-center space-x-2"> <img src="https://placehold.co/32x32/fecdd3/1f2937?text=AS" alt="User Avatar" class="w-8 h-8 rounded-full"> <div> <p class="text-sm font-semibold text-gray-800">Dr. Sharma</p> <p class="text-xs text-gray-500">2 hours ago</p> </div> </div> <button class="text-gray-400 hover:text-gray-600"> <span class="lucide text-base">more-horizontal</span> </button> </div> <div class="bg-gray-200"> <img src="https://placehold.co/600x400/fecdd3/1f2937?text=Class+Activity" alt="Post image" class="w-full h-auto object-cover"> </div> <div class="p-3 space-y-2"> <div class="flex justify-between items-center"> <div class="flex space-x-4"> <button class="text-gray-500 hover:text-red-500 transition-colors"><span class="lucide text-xl">heart</span></button> <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span></button> <button class="text-gray-500 hover:text-green-500 transition-colors"><span class="lucide text-xl">share-2</span></button> </div> <button class="text-gray-500 hover:text-indigo-500 transition-colors"><span class="lucide text-xl">bookmark</span></button> </div> <p class="text-sm font-semibold text-gray-700">15 likes</p> <div class="post-caption-container post-caption-truncated"> <p class="text-sm text-gray-700 caption-text"> <span class="font-semibold">Dr. Sharma</span> <span class="caption-content"> Discussing linked lists in today's Data Structures class! It's a fundamental concept with wide applications. We covered insertion, deletion, and traversal. Make sure to review the examples provided in the portal. #CSE #DataStructures #Algorithms #Learning</span> </p> <button class="read-more-btn text-xs text-blue-600 hover:underline mt-1"></button> </div> <a href="#" class="text-xs text-gray-500 hover:underline block pt-1">View all 3 comments</a> </div> <div class="border-t border-gray-100 px-3 py-2 flex items-center space-x-2"> <img src="https://placehold.co/24x24/fecdd3/1f2937?text=R" alt="My Avatar" class="w-6 h-6 rounded-full"> <input type="text" placeholder="Add a comment..." class="flex-grow text-sm border-none focus:ring-0 p-1 bg-transparent placeholder-gray-400"> <button class="text-blue-500 hover:text-blue-700 text-sm font-semibold">Post</button> </div> </div>
+                <div class="post-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"> <div class="flex items-center justify-between p-3 border-b border-gray-100"> <div class="flex items-center space-x-2"> <img src="https://placehold.co/32x32/fecdd3/1f2937?text=RJ" alt="User Avatar" class="w-8 h-8 rounded-full"> <div> <p class="text-sm font-semibold text-gray-800">Dr. Joshi</p> <p class="text-xs text-gray-500">1 day ago</p> </div> </div> <button class="text-gray-400 hover:text-gray-600"><span class="lucide text-base">more-horizontal</span></button> </div> <div class="p-3 space-y-2"> <div class="post-caption-container post-caption-truncated"> <p class="text-sm text-gray-800 caption-text"> <span class="caption-content"> Reminder: The guest lecture on AI Ethics is scheduled for tomorrow at 2 PM in the main auditorium. Highly recommended for all CS students. The speaker, Dr. Evelyn Reed, is a leading expert in the field and will discuss crucial topics like algorithmic bias, data privacy, and the societal impact of AI development. Attendance is strongly encouraged as these are increasingly important considerations in modern computer science. Please be seated by 1:50 PM. #AI #Ethics #GuestLecture #ComputerScience</span> </p> <button class="read-more-btn text-xs text-blue-600 hover:underline mt-1"></button> </div> <div class="flex justify-between items-center pt-2"> <div class="flex space-x-4"> <button class="text-gray-500 hover:text-red-500 transition-colors"><span class="lucide text-xl">heart</span></button> <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span></button> <button class="text-gray-500 hover:text-green-500 transition-colors"><span class="lucide text-xl">share-2</span></button> </div> <button class="text-gray-500 hover:text-indigo-500 transition-colors"><span class="lucide text-xl">bookmark</span></button> </div> <p class="text-sm font-semibold text-gray-700">28 likes</p> <a href="#" class="text-xs text-gray-500 hover:underline block pt-1">View all 5 comments</a> </div> <div class="border-t border-gray-100 px-3 py-2 flex items-center space-x-2"> <img src="https://placehold.co/24x24/fecdd3/1f2937?text=R" alt="My Avatar" class="w-6 h-6 rounded-full"> <input type="text" placeholder="Add a comment..." class="flex-grow text-sm border-none focus:ring-0 p-1 bg-transparent placeholder-gray-400"> <button class="text-blue-500 hover:text-blue-700 text-sm font-semibold">Post</button> </div> </div>
+                <div class="post-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"> <div class="flex items-center justify-between p-3 border-b border-gray-100"> <div class="flex items-center space-x-2"> <img src="https://placehold.co/32x32/fecdd3/1f2937?text=CC" alt="User Avatar" class="w-8 h-8 rounded-full"> <div> <p class="text-sm font-semibold text-gray-800">Coding Club</p> <p class="text-xs text-gray-500">2 days ago</p> </div> </div> <button class="text-gray-400 hover:text-gray-600"><span class="lucide text-base">more-horizontal</span></button> </div> <div class="bg-gray-200"> <img src="https://placehold.co/600x400/fecdd3/1f2937?text=CodeFest+Winner" alt="Post image" class="w-full h-auto object-cover"> </div> <div class="p-3 space-y-2"> <div class="flex justify-between items-center"> <div class="flex space-x-4"> <button class="text-red-500 transition-colors"><span class="lucide text-xl">heart</span></button> <button class="text-gray-500 hover:text-blue-500 transition-colors"><span class="lucide text-xl">message-circle</span></button> <button class="text-gray-500 hover:text-green-500 transition-colors"><span class="lucide text-xl">share-2</span></button> </div> <button class="text-gray-500 hover:text-indigo-500 transition-colors"><span class="lucide text-xl">bookmark</span></button> </div> <p class="text-sm font-semibold text-gray-700">55 likes</p> <div class="post-caption-container post-caption-truncated"> <p class="text-sm text-gray-700 caption-text"> <span class="font-semibold">Coding Club</span> <span class="caption-content"> Congratulations to the winners of CodeFest 2025! Amazing talent on display. See you all at the next event.</span> </p> <button class="read-more-btn text-xs text-blue-600 hover:underline mt-1"></button> </div> <a href="#" class="text-xs text-gray-500 hover:underline block pt-1">View all 12 comments</a> </div> <div class="border-t border-gray-100 px-3 py-2 flex items-center space-x-2"> <img src="https://placehold.co/24x24/fecdd3/1f2937?text=R" alt="My Avatar" class="w-6 h-6 rounded-full"> <input type="text" placeholder="Add a comment..." class="flex-grow text-sm border-none focus:ring-0 p-1 bg-transparent placeholder-gray-400"> <button class="text-blue-500 hover:text-blue-700 text-sm font-semibold">Post</button> </div> </div>
+            </div>
+             <div class="mt-6 text-center">
+                <a href="#all-posts" class="inline-block bg-white text-blue-600 px-6 py-2 rounded-lg shadow hover:shadow-md transition-shadow text-sm font-medium border border-blue-200 hover:bg-blue-50">
+                    More Posts...
+                </a>
+            </div>
+        </section>
+
+        <section id="quick-access">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Quick Access</h2> <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"> <a href="#" class="relative flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-blue-500 mb-2">notebook-tabs</span> <span class="font-medium text-sm text-gray-700">Notes</span> <span class="notification-badge">3</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-green-500 mb-2">file-question</span> <span class="font-medium text-sm text-gray-700">PYQs / Q&A</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-purple-500 mb-2">calendar-days</span> <span class="font-medium text-sm text-gray-700">Timetable</span> </a> <a href="#" class="relative flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-red-500 mb-2">calendar-check</span> <span class="font-medium text-sm text-gray-700">Events Calendar</span> <span class="notification-badge">1</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-yellow-500 mb-2">users</span> <span class="font-medium text-sm text-gray-700">Clubs & Groups</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-indigo-500 mb-2">handshake</span> <span class="font-medium text-sm text-gray-700">Mentorship</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-pink-500 mb-2">message-square-quote</span> <span class="font-medium text-sm text-gray-700">Feedback</span> </a> <a href="#" class="relative flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-teal-500 mb-2">messages-square</span> <span class="font-medium text-sm text-gray-700">Chatroom / Forums</span> <span class="notification-badge">5+</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-orange-500 mb-2">clipboard-list</span> <span class="font-medium text-sm text-gray-700">Assignment Tracker</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center"> <span class="lucide text-3xl text-cyan-500 mb-2">folder-archive</span> <span class="font-medium text-sm text-gray-700">Resources</span> </a> <a href="#" class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow hover:shadow-lg hover:-translate-y-1 transition-all text-center md:col-start-auto lg:col-start-auto col-start-2 sm:col-start-auto"> <span class="lucide text-3xl text-gray-500 mb-2">settings</span> <span class="font-medium text-sm text-gray-700">Settings</span> </a> </div>
+        </section>
+
+        <section id="announcements">
+            <div class="flex justify-between items-center mb-4"> <h2 class="text-2xl font-semibold text-gray-700">Announcements</h2> <div class="hidden sm:flex space-x-2"> <button class="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">All</button> <button class="px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">Academic</button> <button class="px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">Events</button> <button class="px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">Placement</button> </div> <a href="#" class="text-sm text-blue-600 hover:underline">See All</a> </div> <div class="space-y-4 max-h-72 overflow-y-auto pr-2"> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <h4 class="font-semibold text-gray-800">Guest Lecture on AI Ethics</h4> <p class="text-xs text-gray-500 mb-1">HOD, CSE - April 4, 2025</p> <p class="text-sm text-gray-600 line-clamp-2">Join us for an insightful session on the ethical considerations in Artificial Intelligence by Dr. Anya Sharma...</p> </div> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <h4 class="font-semibold text-gray-800">Library Hours Extended</h4> <p class="text-xs text-gray-500 mb-1">Admin Office - April 3, 2025</p> <p class="text-sm text-gray-600 line-clamp-2">Due to upcoming exams, the central library will remain open until 10 PM on weekdays starting next Monday.</p> </div> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <h4 class="font-semibold text-gray-800">Placement Drive: TechCorp</h4> <p class="text-xs text-gray-500 mb-1">Placement Cell - April 2, 2025</p> <p class="text-sm text-gray-600 line-clamp-2">TechCorp is visiting campus for recruitment on April 15th. Eligible students should register by April 10th.</p> </div> </div>
+        </section>
+
+        <section id="events">
+             <div class="flex justify-between items-center mb-4"> <h2 class="text-2xl font-semibold text-gray-700">Upcoming Events</h2> <a href="#" class="text-sm text-blue-600 hover:underline">View Calendar</a> </div> <div class="flex space-x-4 overflow-x-auto pb-4 -mb-4 horizontal-scroll"> <div class="flex-shrink-0 w-72 bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"> <img src="https://placehold.co/600x300/fecdd3/1f2937?text=Coding+Comp" alt="Event Image" class="w-full h-32 object-cover"> <div class="p-4"> <h4 class="font-semibold text-gray-800">CodeFest 2025</h4> <p class="text-xs text-gray-500 mb-2">April 10, 2025 | 10:00 AM</p> <button class="w-full text-sm bg-blue-500 text-white px-3 py-1.5 rounded-md hover:bg-blue-600 transition-colors">Register Now</button> </div> </div> <div class="flex-shrink-0 w-72 bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"> <img src="https://placehold.co/600x300/fecdd3/1f2937?text=Workshop" alt="Event Image" class="w-full h-32 object-cover"> <div class="p-4"> <h4 class="font-semibold text-gray-800">Robotics Workshop</h4> <p class="text-xs text-gray-500 mb-2">April 12, 2025 | 01:00 PM</p> <button class="w-full text-sm bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md cursor-not-allowed">Registrations Closed</button> </div> </div> <div class="flex-shrink-0 w-72 bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"> <img src="https://placehold.co/600x300/fecdd3/1f2937?text=Seminar" alt="Event Image" class="w-full h-32 object-cover"> <div class="p-4"> <h4 class="font-semibold text-gray-800">Entrepreneurship Seminar</h4> <p class="text-xs text-gray-500 mb-2">April 15, 2025 | 04:00 PM</p> <button class="w-full text-sm bg-green-500 text-white px-3 py-1.5 rounded-md hover:bg-green-600 transition-colors">Join Event</button> </div> </div> <div class="flex-shrink-0 w-1"></div> </div>
+        </section>
+
+        <section id="resources">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Resources Highlights</h2> <div class="mb-4 border-b border-gray-200"> <nav class="flex space-x-4" aria-label="Tabs"> <button class="px-3 py-2 font-medium text-sm text-blue-600 border-b-2 border-blue-600">Recently Uploaded</button> <button class="px-3 py-2 font-medium text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300">Most Viewed</button> </nav> </div> <div class="flex flex-wrap gap-2 mb-4 text-sm"> <select class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"> <option>Filter by Subject</option> <option>Data Structures</option> <option>Web Development</option> <option>Operating Systems</option> </select> <select class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"> <option>Filter by Year</option> <option>2024</option> <option>2023</option> <option>2022</option> </select> <select class="p-1.5 border rounded-md bg-white text-gray-600 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"> <option>Filter by Type</option> <option>Notes</option> <option>PYQ</option> <option>Answer Sheet</option> </select> </div> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <div class="flex justify-between items-start mb-1"> <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">Notes</span> <span class="text-xs text-gray-400">Apr 5</span> </div> <h4 class="font-semibold text-gray-800 mb-1">Linked List Implementation</h4> <p class="text-sm text-gray-500 mb-3">Subject: Data Structures</p> <button class="w-full text-sm bg-gray-100 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"> <span class="lucide text-xs">download</span> <span>Download</span> </button> </div> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <div class="flex justify-between items-start mb-1"> <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">PYQ</span> <span class="text-xs text-gray-400">Apr 4</span> </div> <h4 class="font-semibold text-gray-800 mb-1">Mid-Term Exam 2023</h4> <p class="text-sm text-gray-500 mb-3">Subject: Operating Systems</p> <button class="w-full text-sm bg-gray-100 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"> <span class="lucide text-xs">eye</span> <span>View</span> </button> </div> <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"> <div class="flex justify-between items-start mb-1"> <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-medium">Answer Sheet</span> <span class="text-xs text-gray-400">Apr 3</span> </div> <h4 class="font-semibold text-gray-800 mb-1">Assignment 2 Solutions</h4> <p class="text-sm text-gray-500 mb-3">Subject: Web Development</p> <button class="w-full text-sm bg-gray-100 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"> <span class="lucide text-xs">download</span> <span>Download</span> </button> </div> </div>
+        </section>
+
+        <section id="clubs">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Clubs & Groups</h2> <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow flex flex-col items-center text-center"> <img src="https://placehold.co/80x80/fecdd3/1f2937?text=Code" alt="Coding Club Logo" class="w-16 h-16 rounded-full mb-3 border-2 border-gray-200"> <h4 class="font-semibold text-lg text-gray-800">Coding Club</h4> <p class="text-xs text-gray-500 mb-3">120 Members | 5 Active Discussions</p> <div class="flex space-x-2 mt-auto"> <button class="text-sm bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition-colors">View Group</button> <button class="text-sm bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">Events</button> </div> </div> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow flex flex-col items-center text-center"> <img src="https://placehold.co/80x80/fecdd3/1f2937?text=Debate" alt="Debate Club Logo" class="w-16 h-16 rounded-full mb-3 border-2 border-gray-200"> <h4 class="font-semibold text-lg text-gray-800">Debate Society</h4> <p class="text-xs text-gray-500 mb-3">85 Members | Next event: Apr 18</p> <div class="flex space-x-2 mt-auto"> <button class="text-sm bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors">Join Group</button> <button class="text-sm bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">Chat</button> </div> </div> <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow flex flex-col items-center text-center"> <img src="https://placehold.co/80x80/fecdd3/1f2937?text=Photo" alt="Photography Club Logo" class="w-16 h-16 rounded-full mb-3 border-2 border-gray-200"> <h4 class="font-semibold text-lg text-gray-800">Photography Club</h4> <p class="text-xs text-gray-500 mb-3">60 Members | Photo Walk this Sat</p> <div class="flex space-x-2 mt-auto"> <button class="text-sm bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition-colors">View Group</button> <button class="text-sm bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">Gallery</button> </div> </div> </div>
+        </section>
+
+        <section id="mentorship">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Mentorship</h2> <div class="bg-white p-5 rounded-lg shadow"> <h3 class="font-semibold text-lg mb-3 text-gray-800">Your Mentor</h3> <div class="flex items-center space-x-4"> <img src="https://placehold.co/48x48/fecdd3/1f2937?text=M" alt="Mentor Profile" class="w-12 h-12 rounded-full border"> <div> <p class="font-medium text-gray-700">Dr. Anil Sharma</p> <p class="text-sm text-gray-500">Professor, CSE Department</p> </div> <button class="ml-auto text-sm bg-blue-500 text-white px-4 py-1.5 rounded-md hover:bg-blue-600 transition-colors flex items-center space-x-1"> <span class="lucide text-xs">send</span> <span>Message</span> </button> </div> </div>
+        </section>
+
+        <section id="feedback">
+             <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-lg shadow flex flex-col md:flex-row justify-between items-center gap-4"> <div> <h2 class="text-xl font-semibold text-teal-800">Help Us Improve!</h2> <p class="text-sm text-teal-700 mt-1">Share your thoughts on academics, facilities, or anything else.</p> </div> <button class="bg-teal-500 text-white px-6 py-2 rounded-lg shadow hover:bg-teal-600 transition-colors font-medium flex items-center space-x-2"> <span class="lucide">edit</span> <span>Give Feedback</span> </button> </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 mt-12">
+        <div class="container mx-auto px-4 py-8"> <div class="grid grid-cols-1 md:grid-cols-3 gap-8"> <div> <h4 class="font-semibold text-lg text-white mb-3">CampusConnect</h4> <p class="text-sm mb-3">Connecting students, faculty, and campus life.</p> <nav class="space-y-1 text-sm"> <a href="#" class="hover:text-white hover:underline">About Us</a><br> <a href="#" class="hover:text-white hover:underline">Contact Support</a><br> <a href="#" class="hover:text-white hover:underline">Help Center</a><br> <a href="#" class="hover:text-white hover:underline">Terms of Service</a><br> <a href="#" class="hover:text-white hover:underline">Privacy Policy</a> </nav> </div> <div> <h4 class="font-semibold text-lg text-white mb-3">Quick Links</h4> <nav class="space-y-1 text-sm"> <a href="#" class="hover:text-white hover:underline">Notes</a><br> <a href="#" class="hover:text-white hover:underline">Events</a><br> <a href="#" class="hover:text-white hover:underline">Clubs</a><br> <a href="#" class="hover:text-white hover:underline">Timetable</a><br> <a href="#" class="hover:text-white hover:underline">Feedback</a> </nav> </div> <div> <h4 class="font-semibold text-lg text-white mb-3">Connect With Us</h4> <div class="flex space-x-4 mb-4"> <a href="#" aria-label="College Website" class="text-gray-400 hover:text-white"><span class="lucide text-xl">globe</span></a> <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-white"><span class="lucide text-xl">linkedin</span></a> <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-white"><span class="lucide text-xl">instagram</span></a> </div> <p class="text-sm">Version 1.0.0</p> <p class="text-xs mt-1">&copy; 2025 CampusConnect. All rights reserved.</p> </div> </div> </div>
+    </footer>
+
+    <button class="fixed bottom-6 right-6 bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <span class="lucide text-2xl">message-circle-question</span>
+    </button>
+
+    <button class="fixed bottom-6 left-6 bg-purple-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-purple-700 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+        <span class="lucide text-2xl">bot</span>
+    </button>
+
+
+    <script>
+        function setupDropdown(toggleId, menuId) {
+            const toggleButton = document.getElementById(toggleId);
+            const menu = document.getElementById(menuId);
+            if (toggleButton && menu) {
+                toggleButton.addEventListener('click', (event) => {
+                    event.stopPropagation(); closeAllDropdowns(menuId); menu.classList.toggle('show'); toggleButton.classList.toggle('open');
+                });
+            } else { console.error("Dropdown elements not found for:", toggleId, menuId); }
+        }
+        function closeAllDropdowns(excludeMenuId = null) {
+            document.querySelectorAll('.navbar-dropdown-menu').forEach(menu => {
+                if (menu.id !== excludeMenuId && menu.classList.contains('show')) menu.classList.remove('show');
+            });
+            document.querySelectorAll('.navbar-dropdown-toggle').forEach(toggle => {
+                const associatedMenuId = toggle.id.replace('Toggle', 'Menu');
+                if (associatedMenuId !== excludeMenuId && toggle.classList.contains('open')) toggle.classList.remove('open');
+            });
+        }
+        document.addEventListener('click', (event) => {
+             if (!event.target.closest('.navbar-dropdown-toggle') && !event.target.closest('.navbar-dropdown-menu')) closeAllDropdowns();
+        });
+        setupDropdown('academicsDropdownToggle', 'academicsDropdownMenu');
+        setupDropdown('eventsDropdownToggle', 'eventsDropdownMenu');
+        setupDropdown('communityDropdownToggle', 'communityDropdownMenu');
+        // setupDropdown('feedbackDropdownToggle', 'feedbackDropdownMenu'); // Setup if feedback is a dropdown
+        setupDropdown('profileDropdownToggle', 'profileDropdownMenu');
+
+        const hamburgerButton = document.getElementById('hamburgerButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburgerButton && mobileMenu) {
+            hamburgerButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show'); closeAllDropdowns();
+            });
+        } else { console.error("Mobile menu elements not found"); }
+
+        const darkModeButton = document.getElementById('darkModeToggle');
+        if (darkModeButton) {
+            darkModeButton.addEventListener('click', () => { alert('Dark mode toggle clicked! (Functionality not implemented)'); });
+        } else { console.error("Dark mode toggle button not found"); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const postContainers = document.querySelectorAll('.post-caption-container');
+            postContainers.forEach(container => {
+                const captionTextElement = container.querySelector('.caption-text');
+                const readMoreBtn = container.querySelector('.read-more-btn');
+                const captionContentElement = container.querySelector('.caption-content');
+                if (!captionTextElement || !readMoreBtn || !captionContentElement) return;
+                const maxChars = 150; const fullText = captionContentElement.textContent || "";
+                if (fullText.length <= maxChars) { container.classList.add('post-caption-short'); container.classList.remove('post-caption-truncated'); }
+                else { container.classList.add('post-caption-truncated'); container.classList.remove('post-caption-short'); }
+                readMoreBtn.addEventListener('click', () => {
+                    if (container.classList.contains('post-caption-truncated')) { container.classList.remove('post-caption-truncated'); container.classList.add('post-caption-expanded'); }
+                    else { container.classList.remove('post-caption-expanded'); container.classList.add('post-caption-truncated'); }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

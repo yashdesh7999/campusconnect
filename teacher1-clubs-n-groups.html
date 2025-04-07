@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Clubs & Groups Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Updated styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .club-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer; /* Make the card clickable */
+        }
+        .club-card:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .club-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem auto;
+            border: 2px solid #e0e0e0;
+        }
+        .club-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .club-description {
+            font-size: 0.875rem;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .club-members {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .club-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .club-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            background-color: #e5e7eb;
+            color: #374151;
+            font-size: 0.75rem;
+        }
+        .club-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+        .club-actions button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        .manage-button {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .manage-button:hover {
+            background-color: #2563eb;
+        }
+        .view-button {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+        .view-button:hover {
+            background-color: #d0d0d0;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: 1px solid #e0e0e0;
+        }
+        .filter-chip:hover {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .filter-chip.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        #searchClubs {
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            box-shadow: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        #searchClubs:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .create-club-button {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .create-club-button button{
+             padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            background-color: #10b981;
+            color: white;
+        }
+        .create-club-button button:hover {
+            background-color: #059669;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-semibold text-blue-700 text-center mb-8">Clubs & Groups</h1>
+
+        <div class="flex flex-col md:flex-row md:items-center mb-6">
+            <input
+                type="text"
+                id="searchClubs"
+                placeholder="Search clubs..."
+                class="mb-4 md:mb-0"
+            />
+            <div class="filter-container" id="clubFilters">
+                    <span class="filter-chip" data-type="All">All</span>
+                    <span class="filter-chip" data-type="Tech">Tech</span>
+                    <span class="filter-chip" data-type="Cultural">Cultural</span>
+                    <span class="filter-chip" data-type="Sports">Sports</span>
+                    <span class="filter-chip" data-type="Creative">Creative</span>
+                    <span class="filter-chip" data-type="Innovation">Innovation</span>
+                    <span class="filter-chip" data-type="Social">Eco/Social</span>
+                </div>
+        </div>
+
+        <div id="clubList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+         <div class="create-club-button">
+             <button onclick="location.href='create_club.html'">Create New Club</button>
+        </div>
+    </div>
+
+    <script>
+       const clubs = [
+            {
+                name: "Lexicon Club",
+                description: "Literary club for poetry, debates, and writing.",
+                logo: "https://placehold.co/80x80/4CAF50/FFFFFF?text=LX&font=Montserrat",
+                members: [
+                    { name: "Student 1", role: "Member" },
+                    { name: "Student 2", role: "Admin" },
+                ],
+                tags: ["Cultural", "Creative"],
+                activities: ["Poetry slams", "Debates", "Writing workshops"],
+                facultyAdvisor: "Dr. Smith"  // Added Faculty Advisor
+            },
+            {
+                name: "Cultural Club",
+                description: "Celebrating diversity through dance, music, and drama.",
+                logo: "https://placehold.co/80x80/FFC107/000000?text=CC&font=Montserrat",
+                members: [
+                    { name: "Student 4", role: "Member" },
+                    { name: "Teacher 1", role: "Admin" },
+                ],
+                tags: ["Cultural"],
+                activities: ["Dance", "Music", "Drama"],
+                joinRequests: [],
+                facultyAdvisor: "Ms. Johnson"
+            },
+            {
+                name: "Robotics Club",
+                description: "Building and competing with robots.",
+                logo: "https://placehold.co/80x80/3F51B5/FFFFFF?text=RC&font=Montserrat",
+                members: [{ name: "Student 5", role: "Member" }],
+                tags: ["Tech", "Innovation"],
+                activities: ["Robot design", "Competitions", "Workshops"],
+                joinRequests: [{ name: "Student 6" }, { name: "Student 7" }],
+                 facultyAdvisor: "Mr. Williams"
+            },
+            {
+                name: "Sports Club",
+                description: "Organizing sports events and promoting fitness.",
+                logo: "https://placehold.co/80x80/D50000/FFFFFF?text=SC&font=Montserrat",
+                members: [{ name: "Teacher 2", role: "Admin" }],
+                tags: ["Sports"],
+                activities: ["Tournaments", "Fitness training", "Yoga"],
+                joinRequests: [],
+                facultyAdvisor: "Prof. Davis"
+            },
+            {
+                name: "Photography Club",
+                description: "Capturing moments and learning photography skills.",
+                logo: "https://placehold.co/80x80/9C27B0/FFFFFF?text=PC&font=Montserrat",
+                members: [],
+                tags: ["Creative", "Cultural"],
+                activities: ["Photo walks", "Exhibitions", "Workshops"],
+                joinRequests: [{ name: "Student 8" }],
+                facultyAdvisor: "Ms. Wilson"
+            },
+            {
+                name: "Film Making Club",
+                description: "Creating short films, documentaries, and animations.",
+                logo: "https://placehold.co/80x80/00BCD4/000000?text=FC&font=Montserrat",
+                members: [],
+                tags: ["Creative", "Cultural"],
+                activities: ["Short films", "Documentaries", "Animation"],
+                joinRequests: [],
+                facultyAdvisor: "Mr. Miller"
+            },
+            {
+                name: "Art Club",
+                description: "Exploring various art forms and techniques.",
+                logo: "https://placehold.co/80x80/8BC34A/FFFFFF?text=AC&font=Montserrat",
+                members: [],
+                tags: ["Creative", "Cultural"],
+                activities: ["Painting", "Sculpture", "Exhibitions"],
+                joinRequests: [],
+                facultyAdvisor: "Mrs. Brown"
+            },
+            {
+                name: "SAE Club",
+                description: "Society of Automotive Engineers student chapter.",
+                logo: "https://placehold.co/80x80/2196F3/FFFFFF?text=SAE&font=Montserrat",
+                members: [],
+                tags: ["Tech", "Innovation"],
+                activities: ["Car design", "Racing", "Workshops"],
+                joinRequests: [],
+                facultyAdvisor: "Dr. Anderson"
+            },
+            {
+                name: "Trekker Club",
+                description: "Exploring nature through trekking and hiking.",
+                logo: "https://placehold.co/80x80/795548/FFFFFF?text=TC&font=Montserrat",
+                members: [],
+                tags: ["Sports", "Social"],
+                activities: ["Trekking", "Hiking", "Camping"],
+                joinRequests: [],
+                facultyAdvisor: "Mr. Garcia"
+            },
+            {
+                name: "Green Wave Club",
+                description: "Promoting environmental awareness and sustainability.",
+                logo: "https://placehold.co/80x80/4CAF50/FFFFFF?text=GWC&font=Montserrat",
+                members: 80,
+                tags: ["Social", "Eco/Social"],
+                activities: ["Cleanliness drives", "Tree plantation", "Workshops"],
+                joinRequests: [],
+                facultyAdvisor: "Ms. Rodriguez"
+            },
+        ];
+
+        const clubList = document.getElementById('clubList');
+        const searchClubsInput = document.getElementById('searchClubs');
+        const clubFilters = document.getElementById('clubFilters');
+
+        let activeFilters = new Set(['All']);
+        let userRole = 'teacher';  //  'teacher' or 'student' -  chnage this
+
+        function displayClubs(clubs) {
+            clubList.innerHTML = '';
+            clubs.forEach(club => {
+                if (activeFilters.has('All') || activeFilters.has(club.tags[0]) || activeFilters.has(club.tags[1])) {
+                    const clubCard = document.createElement('div');
+                    clubCard.className = 'club-card';
+                    clubCard.addEventListener('click', () => showClubDetails(club.name));
+
+                    const tagsHTML = club.tags.map(tag => `<span class="club-tag">${tag}</span>`).join('');
+
+                    clubCard.innerHTML = `
+                        <img src="${club.logo}" alt="${club.name} Logo" class="club-logo">
+                        <h2 class="club-name">${club.name}</h2>
+                        <p class="club-description">${club.description}</p>
+                        <p class="club-members">Faculty Advisor: ${club.facultyAdvisor}</p>
+                        <p class="club-members">${club.members.length} Members</p>
+                        <div class="club-tags">${tagsHTML}</div>
+                        <div class="club-actions">
+                            <button class="manage-button" >Manage</button>
+                            <button class="view-button" >View Activities</button>
+                        </div>
+
+                    `;
+
+                    clubList.appendChild(clubCard);
+                }
+            });
+        }
+
+        function filterClubs(searchTerm) {
+          const searchTermLower = searchTerm.toLowerCase();
+          return clubs.filter(club =>
+            club.name.toLowerCase().includes(searchTermLower) ||
+            club.description.toLowerCase().includes(searchTermLower)
+          );
+        }
+
+        function handleJoinClick(clubName) {
+            alert(`Request sent to join ${clubName}!`);
+        }
+
+       function handleManageClick(clubName) {
+           // In a real application, you would fetch the club data from a server here
+            // based on the clubName.  For this example, we'll just use the data we have.
+            const club = clubs.find(c => c.name === clubName);
+            if (club) {
+                // Store the club data in localStorage
+                localStorage.setItem('selectedClub', JSON.stringify(club));
+                // Redirect to the club profile page
+                window.location.href = 'club_profile.html'; //  Make sure this matches the filename
+            } else {
+                alert(`Club ${clubName} not found!`);  //  Handle the error
+            }
+        }
+
+        function handleViewActivityClick(clubName) {
+            const club = clubs.find(c => c.name === clubName);
+            if (!club) return;
+
+            alert(`Activities for ${club.name}: ${club.activities.join(', ')}`);
+        }
+
+
+        searchClubsInput.addEventListener('input', () => {
+            const searchTerm = searchClubsInput.value.trim();
+            const filteredClubs = filterClubs(searchTerm);
+            displayClubs(filteredClubs);
+        });
+
+        clubFilters.addEventListener('click', (event) => {
+            const filterType = event.target.dataset.type;
+            if (!filterType) return;
+
+            if (filterType === 'All') {
+                activeFilters.clear();
+                activeFilters.add('All');
+            } else {
+                activeFilters.delete('All');
+                if (activeFilters.has(filterType)) {
+                    activeFilters.delete(filterType);
+                } else {
+                    activeFilters.add(filterType);
+                }
+                if (activeFilters.size === 0) {
+                    activeFilters.add('All');
+                }
+            }
+
+            // Update UI for active filters
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.toggle('active', activeFilters.has('All') || activeFilters.has(chip.dataset.type));
+            });
+
+            const searchTerm = searchClubsInput.value.trim();
+            const filteredClubs = filterClubs(searchTerm);
+            displayClubs(filteredClubs);
+        });
+
+
+        // Initial display
+        displayClubs(clubs);
+    </script>
+</body>
+</html>

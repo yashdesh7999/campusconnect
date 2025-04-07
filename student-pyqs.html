@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Academic Subjects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .subject-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            cursor: pointer; /* Make the card clickable */
+        }
+        .subject-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .subject-card:hover {
+             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
+        <h1 class="text-2xl font-semibold text-center text-blue-700 mb-8">Academic Subjects</h1>
+
+        <div id="filters" class="mb-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <label for="branch" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-0 sm:mr-4 w-full sm:w-auto">Branch:</label>
+                <select id="branch" class="shadow appearance-none border rounded w-full sm:w-auto py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select Branch</option>
+                    <option value="CSE">Computer Science and Engineering (CSE)</option>
+                    <option value="IT">Information Technology (IT)</option>
+                    <option value="EC">Electronics and Communication Engineering (EC)</option>
+                    <option value="ME">Mechanical Engineering (ME)</option>
+                    <option value="CE">Civil Engineering (CE)</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <label for="year" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-0 sm:mr-4 w-full sm:w-auto">Year:</label>
+                <select id="year" class="shadow appearance-none border rounded w-full sm:w-auto py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select Year</option>
+                    <option value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <label for="semester" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-0 sm:mr-4 w-full sm:w-auto">Semester:</label>
+                <select id="semester" class="shadow appearance-none border rounded w-full sm:w-auto py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select Semester</option>
+                </select>
+            </div>
+            <div class="flex justify-center mt-4">
+                <button id="resetFilters" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+
+        <div id="results" class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Subjects:</h2>
+            <div id="subjectList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-gray-500 text-center">Please select Branch, Year, and Semester to view subjects.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const branchDropdown = document.getElementById("branch");
+        const yearDropdown = document.getElementById("year");
+        const semesterDropdown = document.getElementById("semester");
+        const subjectList = document.getElementById("subjectList");
+        const resetButton = document.getElementById("resetFilters");
+
+        // Data structure for subjects, organized by branch, year, and semester
+        const subjectsData = {
+            "CSE": {
+                "First Year": {
+                    "First Semester": [
+                        { name: "Engineering Chemistry", notes: "Notes for Engineering Chemistry"},
+                        { name: "Mathematics-I", notes: "Notes for Mathematics-I"},
+                        { name: "English for Communication", notes: "Notes for English"},
+                        { name: "Basic Electrical & Electronics Engineering", notes: "Basic Electrical Notes"},
+                        { name: "Engineering Graphics", notes: "Engineering Graphics Notes"},
+                        { name: "Manufacturing Practices (Practical)", notes: "Manufacturing Practices Notes"},
+                        { name: "Evaluation of Internship-I", notes: "Internship-I Notes"},
+                        { name: "Rural Outreach", notes: "Rural Outreach Notes"}
+                    ],
+                    "Second Semester": [
+                        { name: "Engineering Physics", notes: "Physics Notes"},
+                        { name: "Mathematics-II", notes: "Mathematics-II Notes"},
+                        { name: "Basic Mechanical Engineering", notes: "Basic Mechanical Notes"},
+                        { name: "Basic Civil Engineering & Mechanics", notes: "Basic Civil Notes"},
+                        { name: "Basic Computer Engineering", notes: "Basic Computer Notes"},
+                        { name: "Language Lab & Seminars (Practical)", notes: "Language Lab Notes"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation of Internship-I"}
+                    ]
+                },
+                "Second Year": {
+                    "Third Semester": [
+                        { name: "Energy & Environmental Engineering", notes: "Energy Notes"},
+                        { name: "Discrete Structure", notes: "Discrete Structure Notes"},
+                        { name: "Data Structure (Theory + Practical)", notes: "Data Structure Notes"},
+                        { name: "Digital Systems (Theory + Practical)", notes: "Digital Systems Notes"},
+                        { name: "Object Oriented Programming & Methodology (Theory + Practical)", notes: "OOP Notes"},
+                        { name: "Computer Workshop (Practical)", notes: "Computer Workshop Notes"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation of Internship-I"},
+                        { name: "Internship-II", notes: "Internship-II"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ],
+                    "Fourth Semester": [
+                        { name: "Mathematics-III", notes: "Mathematics-III Notes"},
+                        { name: "Analysis & Design of Algorithms (Theory + Practical)", notes: "Algorithm Notes"},
+                        { name: "Software Engineering (Theory + Practical)", notes: "Software Engineering Notes"},
+                        { name: "Computer Organization & Architecture (Theory + Practical)", notes: "COA Notes"},
+                        { name: "Operating Systems (Theory + Practical)", notes: "Operating Systems Notes"},
+                        { name: "Programming Practices (Practical)", notes: "Programming Practices"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation of Internship-II"},
+                        { name: "Cyber Security (Audit Course)", notes: "Cyber Security"},
+                        { name: "Indian Knowledge System (Audit Course)", notes: "Indian Knowledge System"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ]
+                },
+                "Third Year": {
+                    "Fifth Semester": [
+                        { name: "Theory of Computation (Theory + Practical)", notes: "TOC Notes"},
+                        { name: "Database Management Systems (Theory + Practical)", notes: "DBMS Notes"},
+                        { name: "Data Analytics", notes: "Data Analytics Notes"},
+                        { name: "Pattern Recognition", notes: "Pattern Recognition Notes"},
+                        { name: "Cyber Security", notes: "Cyber Security"},
+                        { name: "Internet & Web Technology", notes: "Web Technology Notes"},
+                        { name: "Object Oriented Programming", notes: "OOP Notes"},
+                        { name: "Introduction to Database Management Systems", notes: "Intro to DBMS"},
+                        { name: "Linux Lab (Practical)", notes: "Linux Lab"},
+                        { name: "Python Lab (Practical)", notes: "Python Lab"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation of Internship-II"},
+                        { name: "Internship-III (to be completed in V/VI Semester)", notes: "Internship-III"},
+                        { name: "Minor Project-I (Practical)", notes: "Minor Project"}
+                    ]
+                },
+                "Fourth Year":{
+                    "Sixth Semester": [],
+                    "Seventh Semester": [],
+                    "Eighth Semester": []
+                }
+            },
+            "IT": {
+                "First Year": {
+                    "First Semester": [
+                        { name: "Engineering Chemistry", notes: "Chemistry Notes"},
+                        { name: "Mathematics-I", notes: "Mathematics-I Notes"},
+                        { name: "English for Communication", notes: "English Communication Notes"},
+                        { name: "Basic Electrical & Electronics Engineering", notes: "Basic Electrical Notes"},
+                        { name: "Engineering Graphics", notes: "Engineering Graphics Notes"},
+                        { name: "Manufacturing Practices (Practical)", notes: "Manufacturing Practices"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation of Internship-I"},
+                        { name: "Rural Outreach", notes: "Rural Outreach"}
+                    ],
+                    "Second Semester": [
+                        { name: "Engineering Physics", notes: "Physics Notes"},
+                        { name: "Mathematics-II", notes: "Mathematics-II Notes"},
+                        { name: "Basic Mechanical Engineering", notes: "Basic Mechanical"},
+                        { name: "Basic Civil Engineering & Mechanics", notes: "Basic Civil Notes"},
+                        { name: "Basic Computer Engineering", notes: "Basic Computer"},
+                        { name: "Language Lab & Seminars (Practical)", notes: "Language Lab"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation of Internship-I"}
+                    ]
+                },
+                "Second Year": {
+                    "Third Semester": [
+                        { name: "Energy & Environmental Engineering", notes: "Energy Notes"},
+                        { name: "Discrete Structure", notes: "Discrete Structure Notes"},
+                        { name: "Data Structure (Theory + Practical)", notes: "Data Structure"},
+                        { name: "Digital Systems (Theory + Practical)", notes: "Digital Systems"},
+                        { name: "Object Oriented Programming & Methodology (Theory + Practical)", notes: "OOP"},
+                        { name: "Computer Workshop (Practical)", notes: "Computer Workshop"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation of Internship-I"},
+                        { name: "Internship-II", notes: "Internship-II"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ],
+                    "Fourth Semester": [
+                        { name: "Mathematics-III", notes: "Mathematics-III"},
+                        { name: "Analysis & Design of Algorithms (Theory + Practical)", notes: "Analysis Design Algorithms"},
+                        { name: "Software Engineering (Theory + Practical)", notes: "Software Engineering"},
+                        { name: "Computer Organization & Architecture (Theory + Practical)", notes: "Computer Organization"},
+                        { name: "Operating Systems (Theory + Practical)", notes: "Operating Systems"},
+                        { name: "Programming Practices (Practical)", notes: "Programming Practices"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation of Internship-II"},
+                        { name: "Cyber Security (Audit Course)", notes: "Cyber Security"},
+                        { name: "Indian Knowledge System (Audit Course)", notes: "Indian Knowledge System"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ]
+                },
+                "Third Year": {
+                    "Fifth Semester": [
+                        { name: "Theory of Computation (Theory + Practical)", notes: "Theory Computation"},
+                        { name: "Database Management Systems (Theory + Practical)", notes: "Database Management"},
+                        { name: "Data Analytics", notes: "Data Analytics"},
+                        { name: "Pattern Recognition", notes: "Pattern Recognition"},
+                        { name: "Cyber Security", notes: "Cyber Security"},
+                        { name: "Internet & Web Technology", notes: "Internet Web"},
+                        { name: "Object Oriented Programming", notes: "Object Oriented"},
+                        { name: "Introduction to Database Management Systems", notes: "Intro Database"},
+                        { name: "Linux Lab (Practical)", notes: "Linux Lab"},
+                        { name: "Python Lab (Practical)", notes: "Python Lab"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Internship-III (to be completed in V/VI Semester)", notes: "Internship-III"},
+                        { name: "Minor Project-I (Practical)", notes: "Minor Project-I"}
+                    ]
+                },
+                "Fourth Year":{
+                    "Sixth Semester": [],
+                    "Seventh Semester": [],
+                    "Eighth Semester": []
+                }
+            },
+            "EC": {
+                "First Year": {
+                    "First Semester": [
+                        { name: "Engineering Chemistry", notes: "Chemistry"},
+                        { name: "Mathematics-I", notes: "Mathematics-I"},
+                        { name: "English for Communication", notes: "English Communication"},
+                        { name: "Basic Electrical & Electronics Engineering", notes: "Basic Electrical"},
+                        { name: "Engineering Graphics", notes: "Engineering Graphics"},
+                        { name: "Manufacturing Practices (Practical)", notes: "Manufacturing Practices"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Rural Outreach", notes: "Rural Outreach"}
+                    ],
+                    "Second Semester": [
+                        { name: "Engineering Physics", notes: "Physics"},
+                        { name: "Mathematics-II", notes: "Mathematics-II"},
+                        { name: "Basic Mechanical Engineering", notes: "Basic Mechanical"},
+                        { name: "Basic Civil Engineering & Mechanics", notes: "Basic Civil"},
+                        { name: "Basic Computer Engineering", notes: "Basic Computer"},
+                        { name: "Language Lab & Seminars (Practical)", notes: "Language Lab"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"}
+                    ]
+                },
+                "Second Year": {
+                    "Third Semester": [
+                        { name: "Energy & Environmental Engineering", notes: "Energy"},
+                        { name: "Mathematics-III", notes: "Mathematics-III"},
+                        { name: "Electronic Devices (Theory + Practical)", notes: "Electronic Devices"},
+                        { name: "Network Analysis (Theory + Practical)", notes: "Network Analysis"},
+                        { name: "Digital System Design (Theory + Practical)", notes: "Digital System Design"},
+                        { name: "Electronics Workshop (Practical)", notes: "Electronics Workshop"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Internship-II", notes: "Internship-II"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ],
+                    "Fourth Semester": [
+                        { name: "Signals and Systems (Theory + Practical)", notes: "Signals Systems"},
+                        { name: "Electronic Circuits (Theory + Practical)", notes: "Electronic Circuits"},
+                        { name: "Communication Systems (Theory + Practical)", notes: "Communication Systems"},
+                        { name: "Electromagnetic Field Theory", notes: "Electromagnetic Field"},
+                        { name: "Probability & Stochastic Processes", notes: "Probability Stochastic"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Cyber Security (Audit Course)", notes: "Cyber Security"},
+                        { name: "Indian Knowledge System (Audit Course)", notes: "Indian Knowledge System"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ]
+                },
+                "Third Year": {
+                    "Fifth Semester": [
+                        { name: "Microprocessors & Microcontrollers (Theory + Practical)", notes: "Microprocessors"},
+                        { name: "Digital Communication (Theory + Practical)", notes: "Digital Communication"},
+                        { name: "Control Systems (Theory + Practical)", notes: "Control Systems"},
+                        { name: "VLSI Design", notes: "VLSI Design"},
+                        { name: "Embedded Systems", notes: "Embedded Systems"},
+                        { name: "Digital Signal Processing", notes: "Digital Signal"},
+                        { name: "Internet of Things", notes: "Internet of Things"},
+                        { name: "Wireless Communication", notes: "Wireless Communication"},
+                        { name: "Optical Communication", notes: "Optical Communication"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Internship-III (to be completed in V/VI Semester)", notes: "Internship-III"},
+                        { name: "Minor Project-I (Practical)", notes: "Minor Project-I"}
+                    ]
+                },
+                "Fourth Year":{
+                    "Sixth Semester": [],
+                    "Seventh Semester": [],
+                    "Eighth Semester": []
+                }
+            },
+            "ME": {
+                "First Year": {
+                    "First Semester": [
+                        { name: "Engineering Chemistry", notes: "Chemistry"},
+                        { name: "Mathematics-I", notes: "Mathematics-I"},
+                        { name: "English for Communication", notes: "English Communication"},
+                        { name: "Basic Electrical & Electronics Engineering", notes: "Basic Electrical"},
+                        { name: "Engineering Graphics", notes: "Engineering Graphics"},
+                        { name: "Manufacturing Practices (Practical)", notes: "Manufacturing Practices"},
+                        { name:"Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Rural Outreach", notes: "Rural Outreach"}
+                    ],
+                    "Second Semester": [
+                        { name: "Engineering Physics", notes: "Physics"},
+                        { name: "Mathematics-II", notes: "Mathematics-II"},
+                        { name: "Basic Mechanical Engineering", notes: "Basic Mechanical"},
+                        { name: "Basic Civil Engineering & Mechanics", notes: "Basic Civil"},
+                        { name: "Basic Computer Engineering", notes: "Basic Computer"},
+                        { name: "Language Lab & Seminars (Practical)", notes: "Language Lab"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"}
+                    ]
+                },
+                "Second Year": {
+                    "Third Semester": [
+                        { name: "Mathematics-III", notes: "Mathematics-III"},
+                        { name: "Thermodynamics (Theory + Practical)", notes: "Thermodynamics"},
+                        { name: "Material Technology (Theory + Practical)", notes: "Material Technology"},
+                        { name: "Strength of Material (Theory + Practical)", notes: "Strength Material"},
+                        { name: "Manufacturing Process (Theory + Practical)", notes: "Manufacturing Process"},
+                        { name: "Thermal Engineering Lab (Practical)", notes: "Thermal Engineering"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Internship-II", notes: "Internship-II"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ],
+                    "Fourth Semester": [
+                        { name: "Kinematics of Machines (Theory + Practical)", notes: "Kinematics Machines"},
+                        { name: "Fluid Mechanics (Theory + Practical)", notes: "Fluid Mechanics"},
+                        { name: "Manufacturing Technology (Theory + Practical)", notes: "Manufacturing Technology"},
+                        { name: "Engineering Metallurgy (Theory + Practical)", notes: "Engineering Metallurgy"},
+                        { name: "Applied Thermodynamics (Theory + Practical)", notes: "Applied Thermodynamics"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Cyber Security (Audit Course)", notes: "Cyber Security"},
+                        { name: "Indian Knowledge System (Audit Course)", notes: "Indian Knowledge System"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ]
+                },
+                "Third Year": {
+                    "Fifth Semester": [
+                        { name: "Dynamics of Machines (Theory + Practical)", notes: "Dynamics Machines"},
+                        { name: "Heat & Mass Transfer (Theory + Practical)", notes: "Heat Mass Transfer"},
+                        { name: "Machine Design-I (Theory + Practical)", notes: "Machine Design"},
+                        { name: "Mechatronics", notes: "Mechatronics"},
+                        { name: "Dynamics of Machine", notes: "Dynamics Machine"},
+                        { name: "Alternate Automotive Fuels & Emissions", notes: "Automotive Fuels"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Internship-III (to be completed in V/VI Semester)", notes: "Internship-III"},
+                        { name: "Minor Project-I (Practical)", notes: "Minor Project-I"}
+                    ]
+                },
+                "Fourth Year":{
+                    "Sixth Semester": [],
+                    "Seventh Semester": [],
+                    "Eighth Semester": []
+                }
+            },
+            "CE": {
+                "First Year": {
+                    "First Semester": [
+                        { name: "Engineering Chemistry", notes: "Chemistry"},
+                        { name: "Mathematics-I", notes: "Mathematics-I"},
+                        { name: "English for Communication", notes: "English Communication"},
+                        { name: "Basic Electrical & Electronics Engineering", notes: "Basic Electrical"},
+                        { name: "Engineering Graphics", notes: "Engineering Graphics"},
+                        { name: "Manufacturing Practices (Practical)", notes: "Manufacturing Practices"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Rural Outreach", notes: "Rural Outreach"}
+                    ],
+                    "Second Semester": [
+                        { name: "Engineering Physics", notes: "Physics"},
+                        { name: "Mathematics-II", notes: "Mathematics-II"},
+                        { name: "Basic Mechanical Engineering", notes: "Basic Mechanical"},
+                        { name: "Basic Civil Engineering & Mechanics", notes: "Basic Civil"},
+                        { name: "Basic Computer Engineering", notes: "Basic Computer"},
+                        { name: "Language Lab & Seminars (Practical)", notes: "Language Lab"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"}
+                    ]
+                },
+                "Second Year": {
+                    "Third Semester": [
+                        { name: "Energy & Environmental Engineering", notes: "Energy"},
+                        { name: "Mathematics-III", notes: "Mathematics-III"},
+                        { name: "Strength of Materials (Theory + Practical)", notes: "Strength Materials"},
+                        { name: "Fluid Mechanics (Theory + Practical)", notes: "Fluid Mechanics"},
+                        { name: "Surveying (Theory + Practical)", notes: "Surveying"},
+                        { name: "Civil Engineering Workshop (Practical)", notes: "Civil Workshop"},
+                        { name: "Evaluation of Internship-I", notes: "Evaluation Internship-I"},
+                        { name: "Internship-II", notes: "Internship-II"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ],
+                    "Fourth Semester": [
+                        { name: "Construction Technology (Theory + Practical)", notes: "Construction Technology"},
+                        { name: "Structural Analysis-I (Theory + Practical)", notes: "Structural Analysis"},
+                        { name: "Transportation Engineering-I (Theory + Practical)", notes: "Transportation Engineering"},
+                        { name: "Engineering Geology & Remote Sensing (Theory + Practical)", notes: "Geology Remote Sensing"},
+                        { name: "Software Lab (Practical)", notes: "Software Lab"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Cyber Security (Audit Course)", notes: "Cyber Security"},
+                        { name: "Indian Knowledge System (Audit Course)", notes: "Indian Knowledge System"},
+                        { name: "NSS/NCC", notes: "NSS/NCC"}
+                    ]
+                },
+                "Third Year": {
+                    "Fifth Semester": [
+                        { name: "Open Elective", notes: "Open Elective"},
+                        { name: "Evaluation of Internship-II", notes: "Evaluation Internship-II"},
+                        { name: "Internship-III (to be completed in V/VI Semester)", notes: "Internship-III"},
+                        { name: "Minor Project-I (Practical)", notes: "Minor Project-I"}
+                    ]
+                },
+                "Fourth Year":{
+                    "Sixth Semester": [],
+                    "Seventh Semester": [],
+                    "Eighth Semester": []
+                }
+            }
+        };
+
+        // Event listeners for dropdown changes
+        branchDropdown.addEventListener("change", updateYearOptions);
+        yearDropdown.addEventListener("change", updateSemesterOptions);
+        semesterDropdown.addEventListener("change", displaySubjects);
+        resetButton.addEventListener("click", resetFilters);
+
+        /**
+         * Updates the year dropdown based on the selected branch.
+         */
+        function updateYearOptions() {
+            yearDropdown.innerHTML = '<option value="">Select Year</option>';
+            semesterDropdown.innerHTML = '<option value="">Select Semester</option>';
+            subjectList.innerHTML = '<p class="text-gray-500 text-center">Please select Branch, Year, and Semester to view subjects.</p>';
+
+            const selectedBranch = branchDropdown.value;
+            if (selectedBranch) {
+                for (const year in subjectsData[selectedBranch]) {
+                     // Add only years that exist for the selected branch
+                    if(subjectsData[selectedBranch][year]){
+                        let option = document.createElement("option");
+                        option.value = year;
+                        option.textContent = year;
+                        yearDropdown.appendChild(option);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Updates the semester dropdown based on the selected year.
+         */
+        function updateSemesterOptions() {
+            semesterDropdown.innerHTML = '<option value="">Select Semester</option>';
+            subjectList.innerHTML = '<p class="text-gray-500 text-center">Please select Branch, Year, and Semester to view subjects.</p>';
+
+            const selectedBranch = branchDropdown.value;
+            const selectedYear = yearDropdown.value;
+
+            if (selectedBranch && selectedYear) {
+                // Dynamic semester options based on year
+                if (selectedYear === "First Year") {
+                    addSemesterOption("First Semester");
+                    addSemesterOption("Second Semester");
+                } else if (selectedYear === "Second Year") {
+                    addSemesterOption("Third Semester");
+                    addSemesterOption("Fourth Semester");
+                } else if (selectedYear === "Third Year") {
+                    addSemesterOption("Fifth Semester");
+                     addSemesterOption("Sixth Semester");
+                }
+                 else if (selectedYear === "Fourth Year") {
+                    addSemesterOption("Seventh Semester");
+                    addSemesterOption("Eighth Semester");
+                }
+            }
+        }
+
+        /**
+         * Adds a semester option to the semester dropdown.
+         * @param {string} semester - The semester to add.
+         */
+        function addSemesterOption(semester) {
+            let option = document.createElement("option");
+            option.value = semester;
+            option.textContent = semester;
+            semesterDropdown.appendChild(option);
+        }
+
+        /**
+         * Displays the subjects for the selected branch, year, and semester.
+         */
+        function displaySubjects() {
+            subjectList.innerHTML = ''; // Clear previous subjects
+            const selectedBranch = branchDropdown.value;
+            const selectedYear = yearDropdown.value;
+            const selectedSemester = semesterDropdown.value;
+
+            if (selectedBranch && selectedYear && selectedSemester) {
+                const subjects = subjectsData[selectedBranch][selectedYear][selectedSemester];
+                if (subjects && subjects.length > 0) {
+                    subjects.forEach((subject, index) => {
+                        // Create subject card with details
+                        let card = document.createElement("div");
+                        card.className = "subject-card bg-white rounded-lg shadow-md p-4 flex flex-col justify-between";
+                        card.style.transitionDelay = `${index * 100}ms`; // Staggered appearance
+                        card.innerHTML = `
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">${subject.name}</h3>
+                            <p class="text-gray-600 mb-2">${subject.notes || 'No notes available'}</p>
+                        `;
+                        card.addEventListener('click', () => {
+                            // In a real application, you would construct the URL dynamically
+                            // based on the selected subject, year, etc.
+                            const pqsSearchURL = `https://www.google.com/search?q=${selectedBranch}+${selectedYear}+${selectedSemester}+${subject.name}+PQS+PDF`;  // Example URL
+                            window.open(pqsSearchURL, '_blank'); // Open in new tab
+                        });
+                        subjectList.appendChild(card);
+                        setTimeout(() => card.classList.add('show'), 0); // Trigger animation
+                    });
+                } else {
+                    subjectList.innerHTML = '<p class="text-gray-500 text-center">No subjects found for the selected Branch, Year, and Semester.</p>';
+                }
+            } else {
+                subjectList.innerHTML = '<p class="text-gray-500 text-center">Please select Branch, Year, and Semester to view subjects.</p>';
+            }
+        }
+
+        /**
+         * Resets all filters to their default state.
+         */
+        function resetFilters() {
+            branchDropdown.value = "";
+            yearDropdown.value = "";
+            semesterDropdown.value = "";
+            semesterDropdown.innerHTML = '<option value="">Select Semester</option>';
+            subjectList.innerHTML = '<p class="text-gray-500 text-center">Please select Branch, Year, and Semester to view subjects.</p>';
+        }
+    </script>
+</body>
+</html>

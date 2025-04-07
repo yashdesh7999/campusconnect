@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Events Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+        .event-card {
+            background-color: white; /* bg-white */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .event-card:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .event-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #1e293b; /* text-gray-900 */
+        }
+        .event-description {
+            font-size: 0.875rem; /* text-sm */
+            color: #4b5563; /* text-gray-600 */
+        }
+        .event-date-time {
+            font-size: 0.75rem; /* text-xs */
+            color: #6b7280; /* text-gray-500 */
+        }
+        .event-organizer {
+            font-size: 0.8rem; /* text-sm */
+            color: #374151; /* text-gray-700 */
+            font-weight: 500;
+        }
+        .event-mode {
+            font-size: 0.75rem; /* text-xs */
+            color: #1f2937; /* text-gray-900 */
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+        }
+        .online {
+            background-color: #e0f2fe; /* bg-blue-100 */
+            color: #0b5394; /* text-blue-700 */
+        }
+        .offline {
+            background-color: #f0fdf4; /* bg-green-100 */
+            color: #15803d; /* text-green-700 */
+        }
+
+        /* Search input styles */
+        #eventSearch {
+            padding: 0.75rem;
+            border-radius: 0.375rem; /* rounded-md */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1.5rem; /* mb-6 */
+            font-size: 0.875rem; /* text-sm */
+            box-shadow: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        #eventSearch:focus {
+            border-color: #3b82f6; /* focus:border-blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Sort Dropdown Styles */
+        #sortEvents {
+            padding: 0.75rem;
+            border-radius: 0.375rem; /* rounded-md */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            font-size: 0.875rem; /* text-sm */
+            box-shadow: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+            max-width: 200px;
+        }
+        #sortEvents:focus {
+            border-color: #3b82f6; /* focus:border-blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Filter Styles */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: 1px solid #e0e0e0;
+        }
+        .filter-chip:hover {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .filter-chip.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-2xl font-semibold text-blue-700 text-center mb-8">Events</h1>
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <input
+                type="text"
+                id="eventSearch"
+                placeholder="Search events..."
+                class="mb-4 md:mb-0"
+            />
+            <div class="flex flex-wrap gap-4 items-center">
+                <span class="text-gray-700 font-medium text-sm">Filter by:</span>
+                <div class="filter-container" id="eventFilters">
+                    <span class="filter-chip" data-type="All">All</span>
+                    <span class="filter-chip" data-type="Tech">Tech</span>
+                    <span class="filter-chip" data-type="Cultural">Cultural</span>
+                    <span class="filter-chip" data-type="Sports">Sports</span>
+                    <span class="filter-chip" data-type="Workshops">Workshops</span>
+                    <span class="filter-chip" data-type="Webinars">Webinars</span>
+                </div>
+                <select id="sortEvents" class="">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="upcoming">Upcoming Soon</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="eventList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+    </div>
+
+    <script>
+        const events = [
+            {
+                title: "CodeX Hackathon",
+                description: "24-hour coding event focusing on real-world problems.",
+                date: "2024-04-10T10:00:00",
+                organizer: "Coding Club",
+                type: "Tech",
+                mode: "Offline",
+                location: "Auditorium A"
+            },
+            {
+                title: "Annual Cultural Fest",
+                description: "Dance, drama, music & more!",
+                date: "2024-04-15T18:00:00",
+                organizer: "Cultural Committee",
+                type: "Cultural",
+                mode: "Offline",
+                location: "Open Ground"
+            },
+             {
+                title: "Tech Symposium 2024",
+                description: "Showcasing the latest advancements in technology.",
+                date: "2024-05-20T09:00:00",
+                organizer: "Computer Science Department",
+                type: "Tech",
+                mode: "Offline",
+                location: "Main Hall"
+            },
+            {
+                title: "Spring Sports Meet",
+                description: "Inter-college sports competition.",
+                date: "2024-05-01T08:00:00",
+                organizer: "Sports Council",
+                type: "Sports",
+                mode: "Offline",
+                location: "University Sports Complex"
+            },
+            {
+                title: "Webinar on AI",
+                description: "Online webinar on Artificial Intelligence.",
+                date: "2024-06-10T15:00:00",
+                organizer: "AI Research Club",
+                type: "Tech",
+                mode: "Online",
+                location: "https://meet.google.com/xyz"
+            },
+            {
+                title: "Photography Workshop",
+                description: "Learn the art of photography.",
+                date: "2024-05-25T11:00:00",
+                organizer: "Photography Club",
+                type: "Cultural",
+                mode: "Offline",
+                location: "Art Gallery"
+            },
+            {
+                title: "Code Camp",
+                description: "5-day intensive coding workshop.",
+                date: "2024-07-01T09:00:00",
+                organizer: "Coding Club",
+                type: "Tech",
+                mode: "Offline",
+                location: "Computer Lab 1"
+            },
+            {
+                title: "Music Festival",
+                description: "A grand musical event.",
+                date: "2024-07-15T19:00:00",
+                organizer: "Music Club",
+                type: "Cultural",
+                mode: "Offline",
+                location: "Amphitheater"
+            },
+            {
+                title: "Debate Competition",
+                description: "Inter-department debate competition.",
+                date: "2024-06-20T10:00:00",
+                organizer: "Debate Society",
+                type: "Cultural",
+                mode: "Offline",
+                location: "Law Auditorium"
+            },
+            {
+                title: "Gaming Tournament",
+                description: "Online gaming tournament.",
+                date: "2024-08-01T16:00:00",
+                organizer: "Gaming Club",
+                type: "Sports",
+                mode: "Online",
+                location: "https://discord.gg/gamers"
+            }
+        ];
+
+        const eventList = document.getElementById('eventList');
+        const eventSearch = document.getElementById('eventSearch');
+        const sortEventsDropdown = document.getElementById('sortEvents');
+        const eventFilters = document.getElementById('eventFilters');
+
+        let activeFilters = new Set(['All']);
+
+        function displayEvents(events) {
+            eventList.innerHTML = '';
+            events.forEach(event => {
+                 if (activeFilters.has('All') || activeFilters.has(event.type)) {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = 'event-card';
+
+                    const modeClass = event.mode === 'Online' ? 'online' : 'offline';
+
+                    eventCard.innerHTML = `
+                        <h2 class="event-title">${event.title}</h2>
+                        <p class="event-description">${event.description}</p>
+                        <p class="event-date-time">Date: ${formatDate(event.date)} | Time: ${formatTime(event.date)}</p>
+                        <p class="event-organizer">Organized by: ${event.organizer}</p>
+                        <span class="event-mode ${modeClass}">${event.mode} | ${event.mode === 'Online' ? 'Join Online' : 'Location: ' + event.location}</span>
+                    `;
+
+                    eventList.appendChild(eventCard);
+                }
+            });
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        }
+
+        function filterEvents(searchTerm) {
+            const searchTermLower = searchTerm.toLowerCase();
+            return events.filter(event =>
+                event.title.toLowerCase().includes(searchTermLower) ||
+                event.description.toLowerCase().includes(searchTermLower) ||
+                event.organizer.toLowerCase().includes(searchTermLower)
+            );
+        }
+
+        function sortEvents(events, sortBy) {
+            switch (sortBy) {
+                case 'newest':
+                    return [...events].sort((a, b) => new Date(b.date) - new Date(a.date));
+                case 'oldest':
+                    return [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
+                case 'upcoming':
+                    return [...events].sort((a, b) => {
+                        const now = new Date();
+                        const aDiff = new Date(a.date) > now ? new Date(a.date) - now : Infinity;
+                        const bDiff = new Date(b.date) > now ? new Date(b.date) - now : Infinity;
+                        return aDiff - bDiff;
+                    });
+                default:
+                    return events;
+            }
+        }
+
+        eventSearch.addEventListener('input', () => {
+            const searchTerm = eventSearch.value.trim();
+            const filteredEvents = filterEvents(searchTerm);
+            const sortedEvents = sortEvents(filteredEvents, sortEventsDropdown.value);
+            displayEvents(sortedEvents);
+        });
+
+        sortEventsDropdown.addEventListener('change', () => {
+            const searchTerm = eventSearch.value.trim();
+            const filteredEvents = filterEvents(searchTerm);
+            const sortedEvents = sortEvents(filteredEvents, sortEventsDropdown.value);
+            displayEvents(sortedEvents);
+        });
+
+        eventFilters.addEventListener('click', (event) => {
+            const filterType = event.target.dataset.type;
+            if (!filterType) return;
+
+            if (filterType === 'All') {
+                activeFilters.clear();
+                activeFilters.add('All');
+            } else {
+                activeFilters.delete('All');
+                if (activeFilters.has(filterType)) {
+                    activeFilters.delete(filterType);
+                } else {
+                    activeFilters.add(filterType);
+                }
+                if (activeFilters.size === 0) {
+                    activeFilters.add('All');
+                }
+            }
+
+            // Update UI for active filters
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.toggle('active', activeFilters.has('All') || activeFilters.has(chip.dataset.type));
+            });
+
+            const searchTerm = eventSearch.value.trim();
+            const filteredEvents = filterEvents(searchTerm);
+            const sortedEvents = sortEvents(filteredEvents, sortEventsDropdown.value);
+            displayEvents(sortedEvents);
+        });
+
+        // Initial display
+        const sortedEvents = sortEvents(events, sortEventsDropdown.value);
+        displayEvents(sortedEvents);
+    </script>
+</body>
+</html>
